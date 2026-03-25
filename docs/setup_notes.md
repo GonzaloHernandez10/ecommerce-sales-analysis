@@ -224,7 +224,7 @@ duplicados reales en los datos — los `review_id` repetidos eran un artefacto d
 CSV fuente, no registros con información diferente.
 
 **Solución implementada:**  
-Se agregó la cláusula `IGNORE` al comando `LOAD DATA` para que MySQL descarte
+Se agregó la cláusula `IGNORE` a la sentencia `LOAD DATA` para que MySQL descarte
 silenciosamente los duplicados en lugar de generar un error bloqueante.
 ```sql
 LOAD DATA LOCAL INFILE '...olist_order_reviews_dataset.csv'
