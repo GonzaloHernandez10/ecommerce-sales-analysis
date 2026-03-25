@@ -111,9 +111,9 @@ fricción y qué acciones tendrían mayor impacto.
 
 - [x] Configuración de la base de datos en MySQL
 - [x] Carga y validación de los 8 archivos del dataset
-- [ ] Fase SQL — extracción y transformación (semanas 2–3)
-- [ ] Fase Excel — análisis estadístico y visualizaciones (semanas 4–5)
-- [ ] Documentación final y hallazgos (semana 6)
+- [ ] Análisis exploratorio con SQL — extracción y transformación
+- [ ] Análisis estadístico y visualizaciones en Excel
+- [ ] Comunicación de hallazgos
 
 ---
 
