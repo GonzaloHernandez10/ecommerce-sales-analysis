@@ -7,13 +7,13 @@
 
 ---
 
-## Resumen
+### Resumen
 
 Durante la carga inicial del dataset se encontraron cuatro problemas relacionados con la calidad de los datos fuente y el comportamiento estricto de MySQL. Ninguno de estos problemas afecta la integridad del análisis posterior. A continuación se documenta cada problema, su causa y la solución implementada.
 
 ---
 
-## Problema 1 — Campos vacíos en columnas enteras (tabla `products`)
+### Problema 1 — Campos vacíos en columnas enteras (tabla `products`)
 
 **Advertencia generada:**
 ```
@@ -46,7 +46,7 @@ Los campos `NULL` en todas las tablas se conservan.
 
 ---
 
-## Problema 2 — Categorías huérfanas en `products` sin entrada en `category_translation`
+### Problema 2 — Categorías huérfanas en `products` sin entrada en `category_translation`
 
 **Advertencia generada:**
 
@@ -80,7 +80,7 @@ Ninguno. Las dos categorías ahora tienen traducción al inglés y se comportan 
 
 ---
 
-## Problema 3 — BOM y caracteres invisibles en `customer_id` (tabla `orders`)
+### Problema 3 — BOM y caracteres invisibles en `customer_id` (tabla `orders`)
 
 **Advertencia generada:**
 
@@ -131,7 +131,7 @@ Las tablas `order_items`, `order_payments` y `order_reviews` se cargaron tambié
 
 ---
 
-## Problema 4 — Saltos de línea mixtos en `order_reviews`
+### Problema 4 — Saltos de línea mixtos en `order_reviews`
 
 **Advertencia generada:**
 
@@ -164,9 +164,9 @@ Ninguno. Los timestamps se almacenaron correctamente. El conteo final de reseña
 
 ---
 
-## Problema 5 — Campos de texto sin comillas y duplicados en `order_reviews`
+### Problema 5 — Campos de texto sin comillas y duplicados en `order_reviews`
 
-### 5.1 — CSV modificado sin delimitadores de texto
+#### 5.1 — CSV modificado sin delimitadores de texto
 
 **Causa:**  
 Durante el proceso de carga se eliminaron accidentalmente las comillas dobles
@@ -205,7 +205,7 @@ respetada.
 
 ---
 
-### 5.2 — `review_id` duplicados en el CSV fuente
+#### 5.2 — `review_id` duplicados en el CSV fuente
 
 **Advertencia generada:**
 ```
@@ -245,7 +245,7 @@ correctamente.
 
 ---
 
-## Conteo final de registros
+### Conteo final de registros
 
 ```sql
 SELECT 'customers'                       AS tabla, COUNT(*) AS registros FROM customers
