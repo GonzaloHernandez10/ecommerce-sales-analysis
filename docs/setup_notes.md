@@ -24,7 +24,7 @@ Incorrect integer value: '' for column 'product_name_length' at row 10013
 Algunos registros del archivo `olist_products_dataset.csv` tienen campos vacíos en columnas numéricas (por ejemplo, `product_name_length`, `product_weight_g`). MySQL en modo estricto rechaza cadenas vacías `''` al intentar insertarlas en columnas de tipo `INT`.
 
 **Solución implementada:**  
-Se desactivó el modo estricto de MySQL para la sesión de carga y se usaron variables intermedias con `NULLIF()` en el comando `LOAD DATA` para convertir campos vacíos a `NULL` en lugar de intentar insertarlos como enteros.
+Se desactivó el modo estricto de MySQL para la sesión de carga y se usaron variables intermedias con `NULLIF()` en la sentencia `LOAD DATA` para convertir campos vacíos a `NULL` en lugar de intentar insertarlos como enteros.
 
 ```sql
 SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION';
