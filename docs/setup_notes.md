@@ -68,7 +68,7 @@ Categorías faltantes identificadas:
 Se insertaron manualmente las categorías faltantes en `category_translation` antes de recargar la tabla `products`.
 
 ```sql
-INSERT IGNORE INTO category_translation
+INSERT IGNORE INTO category_translation 
   (product_category_name, product_category_name_english)
 VALUES
   ('portateis_cozinha_e_preparadores_de_alimentos', 'portable_kitchen_and_food_preparers'),
