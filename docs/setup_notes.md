@@ -276,5 +276,5 @@ UNION ALL SELECT 'category_translation', COUNT(*) FROM category_translation;
 - Los datasets públicos de Kaggle no están limpios por defecto. Encontrar y resolver estos problemas es parte del trabajo del analista.
 - `NULLIF()` y variables intermedias en `LOAD DATA` son el patrón correcto para manejar campos vacíos en MySQL.
 - Los problemas de encoding (BOM, `\r\n` vs `\n`) son comunes cuando los archivos CSV se generan en Windows. Siempre verificar con `LENGTH()` si los JOINs no devuelven los resultados esperados.
-- En un entorno de análisis exploratorio, eliminar un foreign key es una decisión válida cuando el problema es del dato fuente y no afecta las queries de análisis.
+- En un entorno no productivo, eliminar un foreign key es una decisión válida cuando el problema es del dato fuente y no afecta las queries de análisis.
 - La calidad de los datos, en especifico la integridad, no se vio afectada gracias a este proceso de resolución de problemas en la carga de datos.
