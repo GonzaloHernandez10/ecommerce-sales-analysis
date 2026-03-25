@@ -1,6 +1,6 @@
 # Análisis de E-Commerce — Olist Brasil
 
-## Descripción general
+### Descripción general
 
 Este proyecto forma parte de un portafolio de análisis de datos orientado a demostrar
 competencias en extracción, transformación, análisis y comunicación de datos utilizando
@@ -13,7 +13,7 @@ una pregunta de negocio concreta a través de un análisis estructurado con narr
 
 ---
 
-## Pregunta de negocio
+### Pregunta de negocio
 
 > **¿Olist está creciendo bien o está creciendo mal?**
 
@@ -24,7 +24,7 @@ los problemas y proponer en qué áreas enfocar la atención.
 
 ---
 
-## Dataset
+### Dataset
 
 **Fuente:** [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)  
 **Periodo cubierto:** 2016 – 2018  
@@ -44,7 +44,7 @@ los problemas y proponer en qué áreas enfocar la atención.
 
 ---
 
-## Herramientas
+### Herramientas
 
 | Herramienta | Uso |
 |---|---|
@@ -54,7 +54,7 @@ los problemas y proponer en qué áreas enfocar la atención.
 
 ---
 
-## Estructura del repositorio
+### Estructura del repositorio
 
 ```
 ecommerce-sales-analysis/
@@ -71,7 +71,7 @@ ecommerce-sales-analysis/
 
 ---
 
-## Narrativa del análisis
+### Narrativa del análisis
 
 El análisis se desarrolla en tres actos que responden preguntas encadenadas:
 
@@ -90,7 +90,7 @@ fricción y qué acciones tendrían mayor impacto.
 
 ---
 
-## Preguntas que guían el análisis
+### Preguntas que guían el análisis
 
 | # | Pregunta | Acto |
 |---|---|---|
@@ -107,7 +107,7 @@ fricción y qué acciones tendrían mayor impacto.
 
 ---
 
-## Estado del proyecto
+### Estado del proyecto
 
 - [x] Configuración de la base de datos en MySQL
 - [x] Carga y validación de los 8 archivos del dataset
@@ -117,19 +117,19 @@ fricción y qué acciones tendrían mayor impacto.
 
 ---
 
-## Hallazgos principales
+### Hallazgos principales
 
 *Esta sección se completará al finalizar el análisis.*
 
 ---
 
-## Conclusiones y recomendaciones
+### Conclusiones y recomendaciones
 
 *Esta sección se completará al finalizar el análisis.*
 
 ---
 
-## Sobre el autor
+### Sobre el autor
 
 Analista de datos en formación con background en desarrollo de aplicaciones web.
 Este proyecto forma parte de un portafolio orientado a demostrar competencias
