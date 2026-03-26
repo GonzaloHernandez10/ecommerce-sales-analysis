@@ -108,3 +108,51 @@ válidas para el análisis.
 **Nota:** Las queries que involucren tiempo de entrega o calificaciones de clientes
 filtrarán únicamente `delivered`, ya que las órdenes con status `shipped` no tienen
 fecha de entrega confirmada ni reseña asociada al momento del análisis.
+
+---
+
+### EDA 4 — Nulos en columnas clave del análisis
+
+**Pregunta:** ¿Qué tan completos están los datos en las columnas relevantes?
+
+**Query:** 
+```sql
+SELECT 
+	SUM(CASE WHEN o.order_purchase_timestamp IS NULL THEN 1 ELSE 0 END) AS nulos_fecha_compra,
+	SUM(CASE WHEN o.order_delivered_customer_date IS NULL THEN 1 ELSE 0 END) AS nulos_fecha_entrega,
+	SUM(CASE WHEN oi.price IS NULL THEN 1 ELSE 0 END) AS nulos_precio,
+	SUM(CASE WHEN oi.freight_value IS NULL THEN 1 ELSE 0 END) AS nulos_flete,
+	SUM(CASE WHEN p.product_category_name IS NULL THEN 1 ELSE 0 END) AS nulos_categoria,
+	SUM(CASE WHEN r.review_score IS NULL THEN 1 ELSE 0 END) AS nulos_calificacion
+FROM orders AS o
+JOIN order_items AS oi ON o.order_id = oi.order_id
+LEFT JOIN products AS p ON oi.product_id = p.product_id
+LEFT JOIN order_reviews AS r ON o.order_id = r.order_id
+WHERE o.order_status IN ('delivered','shipped');
+```
+
+**Hallazgo:**
+
+| Columna | Nulos | Interpretación |
+|---|---|---|
+| nulos_fecha_compra | 0 | Sin problema |
+| nulos_fecha_entrega | 1,196 | Órdenes con status shipped, sin entrega confirmada |
+| nulos_precio | 0 | Sin problema |
+| nulos_flete | 0 | Sin problema |
+| nulos_categoria | 1,567 | Productos sin categoría asignada en el dataset fuente |
+| nulos_calificacion | 69,872 | Órdenes sin reseña del cliente |
+
+De las 96,478 órdenes entregadas, 60,405 (62.6%) no tienen reseña asociada.
+La tasa de respuesta real es del 37.4% — solo 36,073 órdenes cuentan con
+calificación del cliente.
+
+**Decisiones analíticas:**
+- ESTO ESTA MAL -> Las queries de tiempo de entrega filtrarán únicamente `delivered` para
+  excluir los 1,196 nulos de fecha de entrega correspondientes a `shipped`.
+- Las queries de análisis por categoría excluirán los 1,567 productos sin
+  categoría con `WHERE product_category_name IS NOT NULL`.
+- Las conclusiones sobre satisfacción de clientes en el Acto 2 se presentarán
+  con el contexto de que representan al 37.4% de los clientes que dejaron reseña,
+  no al total de órdenes entregadas.
+
+**POR HOY... Reescribir la query ya que el left join podria estar trayendo duplicados. Esto salto a raíz de qye nulo_fecha_entrega no coincide con el numero de ordenes con categoria shipping
