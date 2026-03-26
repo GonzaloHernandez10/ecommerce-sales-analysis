@@ -61,6 +61,7 @@ ecommerce-sales-analysis/
 ├── README.md
 ├── docs/
 │   └── setup_notes.md        # Problemas encontrados durante la carga y soluciones implementadas
+│   └── eda_notes.md          # Documentación sobre cada query ejecutada durante el EDA
 ├── sql/
 │   └── queries.sql           # Todas las consultas documentadas con su pregunta de negocio
 ├── data/
