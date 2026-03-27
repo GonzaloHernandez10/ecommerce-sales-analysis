@@ -5,7 +5,7 @@
 ### Descripción general
 
 Este proyecto forma parte de un portafolio de análisis de datos orientado a demostrar
-competencias en extracción, agrupación, inspección, limpieza, transformación, análisis y comunicación de datos utilizando
+competencias en extracción, agrupación, inspección, limpieza, transformación, análisis y comunicación de hallazgos utilizando
 SQL y Excel. El análisis se realiza sobre el dataset público de Olist, una plataforma
 brasileña de e-commerce que conecta pequeños comerciantes con los principales marketplaces
 del país.
