@@ -185,7 +185,7 @@ fricción y qué acciones tendrían mayor impacto.
 
 - [x] Configuración de la base de datos en MySQL
 - [x] Carga y validación de los 8 archivos del dataset
-- [ ] Análisis exploratorio con SQL — extracción y transformación
+- [ ] Análisis exploratorio con SQL — inspección, limpieza y transformación
 - [ ] Análisis estadístico y visualizaciones en Excel
 - [ ] Comunicación de hallazgos
 
