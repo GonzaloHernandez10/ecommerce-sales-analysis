@@ -28,7 +28,7 @@ los problemas y proponer en qué áreas enfocar la atención.
 
 ### Modelo relacional
 
-![Modelo relacional](docs/erd-olist.png)
+![Modelo relacional](docs/erd_olist.png)
 
 La tabla central es `orders` — casi toda la información del negocio pasa por ella.
 A partir de ahí se conectan las demás entidades del modelo:
@@ -137,6 +137,7 @@ ecommerce-sales-analysis/
 ├── docs/
 │   └── setup_notes.md        # Problemas encontrados durante la carga y soluciones implementadas
 │   └── eda_notes.md          # Documentación sobre cada query ejecutada durante el EDA
+│   └── erd_olist.png         # Imágen del modelo relacional de la base de datos
 ├── sql/
 │   └── queries.sql           # Todas las consultas documentadas con su pregunta de negocio
 ├── data/
