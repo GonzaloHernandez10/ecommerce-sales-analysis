@@ -26,7 +26,7 @@ los problemas y proponer en qué áreas enfocar la atención.
 
 ### Modelo relacional
 
-![Modelo relacional](docs/erd.png)
+![Modelo relacional](docs/erd-olist.png)
 
 La tabla central es `orders` — casi toda la información del negocio pasa por ella.
 A partir de ahí se conectan las demás entidades del modelo:
