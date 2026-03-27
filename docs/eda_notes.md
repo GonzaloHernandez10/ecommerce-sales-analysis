@@ -97,7 +97,7 @@ previas al despacho o la entrega, sin valor comercial concretado. Los estados `c
 `unavailable` representan transacciones que no generaron valor real.
 
 **Decisión analítica:**
-Se incluyen en la vista únicamente `delivered` y `shipped` como órdenes con valor
+Se toman únicamente `delivered` y `shipped` como órdenes con valor
 comercial válido. `shipped` representa órdenes reales, pagadas y en tránsito hacia
 el cliente. Se excluyen `canceled`, `unavailable`, `invoiced`, `processing`,
 `created` y `approved`, ya que no representan ventas concretadas.
