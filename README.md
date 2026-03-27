@@ -24,6 +24,79 @@ los problemas y proponer en qué áreas enfocar la atención.
 
 ---
 
+### Modelo relacional
+
+![Modelo relacional](docs/erd.png)
+
+La tabla central es `orders` — casi toda la información del negocio pasa por ella.
+A partir de ahí se conectan las demás entidades del modelo:
+
+**customers** — Registra a cada cliente único que realizó al menos una compra.
+- `customer_id` — identificador de la cuenta del cliente.
+- `customer_unique_id` — identificador del cliente a nivel persona.
+- `customer_zip_code` — código postal del cliente.
+- `customer_city` — ciudad de residencia del cliente.
+- `customer_state` — estado de residencia del cliente.
+
+**orders** — Registra el ciclo de vida completo de cada orden desde la compra hasta la entrega.
+- `order_id` — identificador único de la orden.
+- `customer_id` — referencia al cliente que realizó la compra.
+- `order_status` — estado actual de la orden: `delivered`, `shipped`, `canceled`, entre otros.
+- `order_purchase_timestamp` — fecha y hora en que el cliente realizó la compra.
+- `order_approved_at` — fecha y hora en que el pago fue aprobado.
+- `order_delivered_carrier_date` — fecha en que la orden fue entregada al transportista.
+- `order_delivered_customer_date` — fecha en que la orden llegó al cliente.
+- `order_estimated_delivery_date` — fecha de entrega prometida al cliente al momento de la compra.
+
+**order_items** — Registra cada producto dentro de una orden. Una orden puede contener múltiples productos de distintos vendedores.
+- `order_id` — referencia a la orden a la que pertenece el ítem.
+- `order_item_id` — número secuencial del ítem dentro de la orden.
+- `product_id` — referencia al producto comprado.
+- `seller_id` — referencia al vendedor que despachó el ítem.
+- `shipping_limit_date` — fecha límite para que el vendedor despache el producto.
+- `price` — precio del producto en reales brasileños.
+- `freight_value` — costo de envío del ítem en reales brasileños.
+
+**order_payments** — Registra la información de pago de cada orden. Una orden puede tener múltiples registros si el cliente usó más de un método de pago.
+- `order_id` — referencia a la orden pagada.
+- `payment_sequential` — número secuencial del pago dentro de la orden.
+- `payment_type` — método de pago: `credit_card`, `boleto`, `voucher`, `debit_card`.
+- `payment_installments` — número de cuotas en que se dividió el pago.
+- `payment_value` — valor pagado en reales brasileños (BRL).
+
+**order_reviews** — Registra las calificaciones y comentarios que los clientes dejan después de recibir su orden.
+- `review_id` — identificador único de la reseña.
+- `order_id` — referencia a la orden evaluada.
+- `review_score` — calificación del cliente del 1 (muy malo) al 5 (excelente).
+- `review_comment_title` — título corto del comentario en portugués (opcional).
+- `review_comment_message` — comentario extendido del cliente en portugués (opcional).
+- `review_creation_date` — fecha en que se envió la solicitud de reseña al cliente.
+- `review_answer_timestamp` — fecha en que el cliente respondió la reseña.
+
+**products** — Catálogo de todos los productos disponibles en la plataforma.
+- `product_id` — identificador único del producto.
+- `product_category_name` — categoría del producto en portugués.
+- `product_name_length` — número de caracteres en el nombre del producto.
+- `product_description_length` — número de caracteres en la descripción del producto.
+- `product_photos_qty` — cantidad de fotos del producto.
+- `product_weight_g` — peso del producto en gramos.
+- `product_length_cm` — longitud del producto en centímetros.
+- `product_height_cm` — altura del producto en centímetros.
+- `product_width_cm` — ancho del producto en centímetros.
+
+**sellers** — Registra a cada vendedor que opera dentro de la plataforma de Olist.
+- `seller_id` — identificador único del vendedor.
+- `seller_zip_code` — código postal del vendedor.
+- `seller_city` — ciudad donde opera el vendedor.
+- `seller_state` — estado donde opera el vendedor.
+
+**category_translation** — Tabla de referencia que traduce los nombres de categorías
+del portugués al inglés. Se usa para hacer el análisis más legible.
+- `product_category_name` — nombre de la categoría en portugués (clave primaria).
+- `product_category_name_english` — nombre de la categoría en inglés.
+
+---
+
 ### Dataset
 
 **Fuente:** [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)  
