@@ -21,7 +21,7 @@ una pregunta de negocio concreta a través de un análisis estructurado con narr
 
 Las ventas de Olist crecieron en volumen entre 2016 y 2018, pero simultáneamente
 aumentaron las quejas de clientes. Este análisis busca determinar si el crecimiento
-en volumen está comprometiendo la calidad del servicio, identificar dónde se concentran
+en volumen de ventas está comprometiendo la calidad del servicio, identificar dónde se concentran
 los problemas y proponer en qué áreas enfocar la atención.
 
 ---
