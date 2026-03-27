@@ -49,8 +49,8 @@ El dataset cubre un periodo de aproximadamente 25 meses:
 
 | Campo | Valor |
 |---|---|
-| Primera orden | 2016-09-04 21:15:19 |
-| Última orden  | 2018-10-17 17:30:18 |
+| primera_orden | 2016-09-04 21:15:19 |
+| ultima_orden  | 2018-10-17 17:30:18 |
 
 **Decisión analítica:**
 Tres consideraciones para el análisis temporal:
