@@ -1,5 +1,7 @@
 # Análisis de E-Commerce — Olist Brasil
 
+---
+
 ### Descripción general
 
 Este proyecto forma parte de un portafolio de análisis de datos orientado a demostrar
