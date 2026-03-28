@@ -116,7 +116,7 @@ fecha de entrega confirmada ni reseña asociada al momento del análisis.
 **Pregunta:** ¿Qué tan completos están los datos en las columnas relevantes para
 el análisis?
 
-**Columnas relevantes:** Para este punto se determinaron las columnas `order_purchase_timestamp` y `order_delivered_customer_date` de la tabla orders, `price` y `freight_value` de la tabla order_items y `product_category_name` de la tabla products
+**Columnas relevantes:** Para este punto se determinaron las columnas `order_purchase_timestamp` y `order_delivered_customer_date` de la tabla orders, `price` y `freight_value` de la tabla order_items y `product_category_name` de la tabla products como columnas relevantes.
 
 **Queries:**
 ```sql
