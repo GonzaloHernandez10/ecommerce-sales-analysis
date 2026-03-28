@@ -197,7 +197,7 @@ subconsulta.
 
 **Queries:**
 ```sql
--- Verificación de la columna price de la columna order_items
+-- Verificación de los valores en la columna price
 SELECT 
 	ROUND(MIN(oi.price)) AS minimo_precio,
 	ROUND(MAX(oi.price)) AS maximo_precio,
@@ -228,7 +228,7 @@ FROM (
 ) AS datos_ordenados
 WHERE fila IN (FLOOR((@total + 1) / 2), CEIL((@total + 1) / 2));
 
--- Verificación de la columna freight_value de la columna order_items
+-- Verificación de los valores en la columna freight_value 
 SELECT 
 	ROUND(MIN(oi.freight_value)) AS minimo_precio_envio,
 	ROUND(MAX(oi.freight_value)) AS maximo_precio_envio,
@@ -306,12 +306,12 @@ considerablemente el promedio.
 
 **Interpretación de negocio:**
 
-- Los 383 fletes con valor 0 se interpretan como envíos gratuitos, práctica
+- Los 383 precios de envío con valor 0 se interpretan como envíos gratuitos, práctica
   común en e-commerce. No son anomalías sino una decisión comercial del vendedor.
-- El flete máximo de 410 BRL no es un error. Brasil tiene una extensión territorial
+- El precio de envío máximo de 410 BRL no es un error. Brasil tiene una extensión territorial
   de 8.5 millones de km² y estados del norte como Amazonas, Roraima y Amapá están
-  a más de 3,000 km de los centros de distribución principales. Los fletes altos
-  son consecuencia directa de la geografía del país.
+  a más de 3,000 km de los centros de distribución principales. Los precios de envío altos
+  pueden ser consecuencia directa de la geografía del país.
 - El precio mínimo de 1 BRL genera ruido pero no se excluye del análisis.
   Puede representar productos promocionales o accesorios de bajo costo legítimos.
 
