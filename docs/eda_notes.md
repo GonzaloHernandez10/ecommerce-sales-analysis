@@ -185,7 +185,7 @@ subconsulta.
   ingresos totales o volumen estos registros sí se incluyen ya que su precio
   es válido para el análisis.
 - Las conclusiones sobre satisfacción de clientes en el Acto 2 se presentarán
-  bajo el contexto del 37.4% de los clientes que dejaron si dejaron una reseña
+  bajo el contexto del 37.4% de los clientes que si dejaron una reseña
   (36,472 de 97,585 órdenes válidas), no al total.
   
 ---
