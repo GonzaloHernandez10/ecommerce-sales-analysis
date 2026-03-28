@@ -120,7 +120,7 @@ el análisis?
 
 **Queries:**
 ```sql
--- Verificación de cuantas ordenes, con estatus 'delivered'o'shipped', 
+-- Verificación de cuantas ordenes, con estatus 'delivered' o 'shipped', 
 -- no tienen fecha de compra o fecha de entrega registrada
 SELECT
     SUM(CASE WHEN o.order_purchase_timestamp IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_compra,
