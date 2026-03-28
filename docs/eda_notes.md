@@ -146,7 +146,7 @@ JOIN products AS p ON oi.product_id = p.product_id
 JOIN orders AS o   ON o.order_id    = oi.order_id
 WHERE o.order_status IN ('delivered', 'shipped');
 
--- Verificación de cuentas ordenes, con estatus 'delivered' o 'shipped' no tienen una
+-- Verificación de cuentas ordenes, con estatus 'delivered' o 'shipped', no tienen una
 -- calificación registrada
 SELECT COUNT(*) AS nulos_calificacion
 FROM orders AS o
