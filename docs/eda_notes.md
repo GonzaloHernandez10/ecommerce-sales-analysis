@@ -167,7 +167,7 @@ AND o.order_status IN ('delivered', 'shipped');
 | precio_item | 0 | Sin problema. Todos los ítems tienen precio registrado. |
 | envio_item | 0 | Sin problema. Todos los ítems tienen valor de flete registrado. |
 | categoria_producto | 1,564 | Productos sin categoría asignada en el dataset fuente. Representa ítems cuya categoría no fue registrada por el vendedor. |
-| calificacion_cliente | 61,113 | Órdenes sin reseña asociada. Comportamiento normal — no todos los clientes dejan calificación. |
+| calificacion_cliente | 61,113 | Órdenes sin reseña asociada. Comportamiento normal, no todos los clientes dejan calificación. |
 
 **Nota técnica sobre la query de calificaciones:**
 Se utilizó `NOT EXISTS` con subconsulta en lugar de `LEFT JOIN ... WHERE IS NULL`
