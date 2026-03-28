@@ -113,46 +113,80 @@ fecha de entrega confirmada ni reseña asociada al momento del análisis.
 
 ### EDA 4 — Nulos en columnas clave del análisis
 
-**Pregunta:** ¿Qué tan completos están los datos en las columnas relevantes?
+**Pregunta:** ¿Qué tan completos están los datos en las columnas relevantes para
+el análisis?
 
-**Query:** 
+**Columnas relevantes**
+Para este punto se determinaron las columnas `order_purchase_timestamp` y `order_delivered_customer_date` de la tabla orders, `price` y `freight_value` de la tabla order_items y `product_category_name` de la tabla products
+
+**Queries:**
 ```sql
-SELECT 
-	SUM(CASE WHEN o.order_purchase_timestamp IS NULL THEN 1 ELSE 0 END) AS nulos_fecha_compra,
-	SUM(CASE WHEN o.order_delivered_customer_date IS NULL THEN 1 ELSE 0 END) AS nulos_fecha_entrega,
-	SUM(CASE WHEN oi.price IS NULL THEN 1 ELSE 0 END) AS nulos_precio,
-	SUM(CASE WHEN oi.freight_value IS NULL THEN 1 ELSE 0 END) AS nulos_flete,
-	SUM(CASE WHEN p.product_category_name IS NULL THEN 1 ELSE 0 END) AS nulos_categoria,
-	SUM(CASE WHEN r.review_score IS NULL THEN 1 ELSE 0 END) AS nulos_calificacion
+-- Verificación de cuantas ordenes, con estatus 'delivered'o'shipped', 
+-- no tienen fecha de compra o fecha de entrega registrada
+SELECT
+    SUM(CASE WHEN o.order_purchase_timestamp IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_compra,
+    SUM(CASE WHEN o.order_delivered_customer_date IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_entrega
+FROM orders AS o
+WHERE o.order_status IN ('delivered', 'shipped');
+
+-- Verificación de cuantos items no tienen precio o precio de envío registrado en
+-- base a las ordenes con estatus 'delivered'o'shipped'
+SELECT
+    SUM(CASE WHEN oi.price         IS NULL THEN 1 ELSE 0 END) AS nulos_precio_item,
+    SUM(CASE WHEN oi.freight_value IS NULL THEN 1 ELSE 0 END) AS nulos_envio_item
 FROM orders AS o
 JOIN order_items AS oi ON o.order_id = oi.order_id
-LEFT JOIN products AS p ON oi.product_id = p.product_id
-LEFT JOIN order_reviews AS r ON o.order_id = r.order_id
-WHERE o.order_status IN ('delivered','shipped');
+WHERE o.order_status IN ('delivered', 'shipped');
+
+-- Verificar cuantos productos no tienen una categoría registrada en base a las ordenes con
+-- estatus 'delivered'o'shipped'
+SELECT
+    SUM(CASE WHEN p.product_category_name IS NULL THEN 1 ELSE 0 END) AS nulos_categoria
+FROM order_items AS oi
+JOIN products AS p ON oi.product_id = p.product_id
+JOIN orders AS o   ON o.order_id    = oi.order_id
+WHERE o.order_status IN ('delivered', 'shipped');
+
+-- Verificación de cuentas ordenes, con estatus 'delivered' o 'shipped' no tienen una
+-- calificación registrada
+SELECT COUNT(*) AS nulos_calificacion
+FROM orders AS o
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM order_reviews AS orv
+    WHERE o.order_id = orv.order_id
+)
+AND o.order_status IN ('delivered', 'shipped');
 ```
 
-**Hallazgo:**
+**Hallazgos:**
 
-| Columna | Nulos | Interpretación |
+| Columna verificada | Nulos | Interpretación |
 |---|---|---|
-| nulos_fecha_compra | 0 | Sin problema |
-| nulos_fecha_entrega | 1,196 | Órdenes con status shipped, sin entrega confirmada |
-| nulos_precio | 0 | Sin problema |
-| nulos_flete | 0 | Sin problema |
-| nulos_categoria | 1,567 | Productos sin categoría asignada en el dataset fuente |
-| nulos_calificacion | 69,872 | Órdenes sin reseña del cliente |
+| fecha_compra | 0 | Sin problema. Todas las órdenes tienen fecha de compra. |
+| fecha_entrega | 1,115 | 1,107 corresponden a órdenes con status `shipped` sin entrega confirmada. Los 8 restantes son órdenes `delivered` con fecha de entrega ausente — anomalía identificada en el EDA anterior. |
+| precio_item | 0 | Sin problema. Todos los ítems tienen precio registrado. |
+| envio_item | 0 | Sin problema. Todos los ítems tienen valor de flete registrado. |
+| categoria_producto | 1,564 | Productos sin categoría asignada en el dataset fuente. Representa ítems cuya categoría no fue registrada por el vendedor. |
+| calificacion_cliente | 61,113 | Órdenes sin reseña asociada. Comportamiento normal — no todos los clientes dejan calificación. |
 
-De las 96,478 órdenes entregadas, 60,405 (62.6%) no tienen reseña asociada.
-La tasa de respuesta real es del 37.4% — solo 36,073 órdenes cuentan con
-calificación del cliente.
+**Nota técnica sobre la query de calificaciones:**
+Se utilizó `NOT EXISTS` con subconsulta en lugar de `LEFT JOIN ... WHERE IS NULL`
+porque `NOT EXISTS` es más eficiente — se detiene al encontrar el primer match —
+y evita el comportamiento impredecible de `NOT IN` cuando existen NULLs en la
+subconsulta.
 
 **Decisiones analíticas:**
-- ESTO ESTA MAL -> Las queries de tiempo de entrega filtrarán únicamente `delivered` para
-  excluir los 1,196 nulos de fecha de entrega correspondientes a `shipped`.
-- Las queries de análisis por categoría excluirán los 1,567 productos sin
-  categoría con `WHERE product_category_name IS NOT NULL`.
-- Las conclusiones sobre satisfacción de clientes en el Acto 2 se presentarán
-  con el contexto de que representan al 37.4% de los clientes que dejaron reseña,
-  no al total de órdenes entregadas.
 
-**POR HOY... Reescribir la query ya que el left join podria estar trayendo duplicados. Esto salto a raíz de qye nulo_fecha_entrega no coincide con el numero de ordenes con categoria shipping
+- Las queries que involucren tiempo de entrega filtrarán adicionalmente por
+  `order_delivered_customer_date IS NOT NULL` para excluir los 1,115 registros
+  sin fecha de entrega.
+- Las queries de análisis por categoría excluirán los 1,564 productos sin
+  categoría con `WHERE product_category_name IS NOT NULL`. Para queries de
+  ingresos totales o volumen estos registros sí se incluyen ya que su precio
+  es válido.
+- Las conclusiones sobre satisfacción de clientes en el Acto 2 se presentarán
+  con el contexto de que representan al 37.4% de los clientes que dejaron
+  reseña (36,472 de 97,585 órdenes válidas), no al total.
+  
+---
