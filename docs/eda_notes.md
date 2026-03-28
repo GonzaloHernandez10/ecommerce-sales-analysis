@@ -129,7 +129,7 @@ FROM orders AS o
 WHERE o.order_status IN ('delivered', 'shipped');
 
 -- Verificación de cuantos items no tienen precio o precio de envío registrado en
--- base a las ordenes con estatus 'delivered'o'shipped'
+-- base a las ordenes con estatus 'delivered' o 'shipped'
 SELECT
     SUM(CASE WHEN oi.price         IS NULL THEN 1 ELSE 0 END) AS nulos_precio_item,
     SUM(CASE WHEN oi.freight_value IS NULL THEN 1 ELSE 0 END) AS nulos_envio_item
@@ -138,7 +138,7 @@ JOIN order_items AS oi ON o.order_id = oi.order_id
 WHERE o.order_status IN ('delivered', 'shipped');
 
 -- Verificar cuantos productos no tienen una categoría registrada en base a las ordenes con
--- estatus 'delivered'o'shipped'
+-- estatus 'delivered' o 'shipped'
 SELECT
     SUM(CASE WHEN p.product_category_name IS NULL THEN 1 ELSE 0 END) AS nulos_categoria
 FROM order_items AS oi
