@@ -162,12 +162,12 @@ AND o.order_status IN ('delivered', 'shipped');
 
 | Columna verificada | Nulos | Interpretación |
 |---|---|---|
-| fecha_compra | 0 | Sin problema. Todas las órdenes tienen fecha de compra. |
-| fecha_entrega | 1,115 | 1,107 corresponden a órdenes con status `shipped` sin entrega confirmada. Los 8 restantes son órdenes `delivered` con fecha de entrega ausente, estos 8 registros representan una anomalía. |
-| precio_item | 0 | Sin problema. Todos los ítems tienen precio registrado. |
-| envio_item | 0 | Sin problema. Todos los ítems tienen valor de flete registrado. |
-| categoria_producto | 1,564 | Productos sin categoría asignada en el dataset fuente. Representa ítems cuya categoría no fue registrada por el vendedor. |
-| calificacion_cliente | 61,113 | Órdenes sin reseña asociada. Comportamiento normal, no todos los clientes dejan calificación. |
+| order_purchase_timestamp | 0 | Sin problema. Todas las órdenes tienen fecha de compra. |
+| order_delivered_customer_date | 1,115 | 1,107 corresponden a órdenes con status `shipped` sin entrega confirmada. Los 8 restantes son órdenes `delivered` con fecha de entrega ausente, estos 8 registros representan una anomalía. |
+| price | 0 | Sin problema. Todos los ítems tienen precio registrado. |
+| freight_value | 0 | Sin problema. Todos los ítems tienen valor de flete registrado. |
+| product_category_name | 1,564 | Productos sin categoría asignada en el dataset fuente. Representa ítems cuya categoría no fue registrada por el vendedor. |
+| nulos_calificacion | 61,113 | Órdenes sin reseña asociada. Comportamiento normal, no todos los clientes dejan calificación. |
 
 **Nota técnica sobre la query de calificaciones:**
 Se utilizó `NOT EXISTS` con subconsulta en lugar de `LEFT JOIN ... WHERE IS NULL`
