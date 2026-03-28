@@ -171,8 +171,8 @@ AND o.order_status IN ('delivered', 'shipped');
 
 **Nota técnica sobre la query de calificaciones:**
 Se utilizó `NOT EXISTS` con subconsulta en lugar de `LEFT JOIN ... WHERE IS NULL`
-porque `NOT EXISTS` es más eficiente — se detiene al encontrar el primer match —
-y evita el comportamiento impredecible de `NOT IN` cuando existen NULLs en la
+porque `NOT EXISTS` es más eficiente, se detiene al encontrar el primer match,
+y evita el comportamiento impredecible de `NOT IN` cuando existen valores nulos en la
 subconsulta.
 
 **Decisiones analíticas:**
@@ -180,12 +180,12 @@ subconsulta.
 - Las queries que involucren tiempo de entrega filtrarán adicionalmente por
   `order_delivered_customer_date IS NOT NULL` para excluir los 1,115 registros
   sin fecha de entrega.
-- Las queries de análisis por categoría excluirán los 1,564 productos sin
+- Las queries que involucren categoría excluirán los 1,564 productos sin
   categoría con `WHERE product_category_name IS NOT NULL`. Para queries de
   ingresos totales o volumen estos registros sí se incluyen ya que su precio
-  es válido.
+  es válido para el análisis.
 - Las conclusiones sobre satisfacción de clientes en el Acto 2 se presentarán
-  con el contexto de que representan al 37.4% de los clientes que dejaron
-  reseña (36,472 de 97,585 órdenes válidas), no al total.
+  bajo el contexto del 37.4% de los clientes que dejaron si dejaron una reseña
+  (36,472 de 97,585 órdenes válidas), no al total.
   
 ---
