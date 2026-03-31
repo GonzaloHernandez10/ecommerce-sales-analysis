@@ -367,8 +367,8 @@ fue desastrosa, por lo que se clasifica como neutra y no como positiva.
 **Interpretación estadística y de negocio:**
 
 La distribución de calificaciones presenta una concentración marcada en el extremo
-positivo. el 59.14% de los clientes otorgó la calificación máxima. Sin embargo,
-el 13.31% de reseñas negativas (calificaciones 1 y 2) representa el segmento de mayor interés analítico: Esto se podria interpretar con el **principio de pareto**, identificar qué factores influyen en ese 13% de insatisfacción permitiría resolver el problema que afecta a la mayoría de los clientes inconformes.
+positivo. El 59.14% de los clientes otorgó la calificación máxima. Sin embargo,
+el 13.31% de reseñas negativas (calificaciones 1 y 2) representa el segmento de mayor interés analítico: Esto se podria interpretarse con el **principio de pareto**, identificar qué factores influyen en ese 13% de insatisfacción permitiría resolver el problema que afecta a la mayoría de los clientes inconformes.
 
 Es relevante destacar que la calificación 1 (10.18%) supera ampliamente a la
 calificación 2 (3.13%), lo que sugiere que cuando un cliente está insatisfecho,
