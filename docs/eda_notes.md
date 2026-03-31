@@ -190,7 +190,7 @@ subconsulta.
 
 ---
 
-## EDA 5 — Revisión de rangos y distribución de precios
+### EDA 5 — Revisión de rangos y distribución de precios
 
 **Pregunta:** ¿Los valores de precio y precio de envío tienen rangos coherentes con el negocio?
 ¿Existen valores anómalos que distorsionen el análisis?
@@ -326,7 +326,7 @@ considerablemente el promedio.
 
 ---
 
-## EDA 6 — Distribución de calificaciones de clientes
+### EDA 6 — Distribución de calificaciones de clientes
 
 **Pregunta:** ¿Qué calificaciones existen y cómo se distribuyen?
 
