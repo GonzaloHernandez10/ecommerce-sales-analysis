@@ -211,8 +211,8 @@ WHERE o.order_status IN ('delivered', 'shipped');
 SET @rowcount = 0;
 SET @total = (
     SELECT COUNT(*)
-    FROM order_items oi
-    JOIN orders o ON oi.order_id = o.order_id
+    FROM order_items AS oi
+    JOIN orders AS o ON oi.order_id = o.order_id
     WHERE o.order_status IN ('delivered', 'shipped')
     AND oi.price > 0
 );
@@ -220,8 +220,8 @@ SET @total = (
 SELECT ROUND(AVG(price), 2) AS mediana_precio
 FROM (
     SELECT oi.price, @rowcount := @rowcount + 1 AS fila
-    FROM order_items oi
-    JOIN orders o ON oi.order_id = o.order_id
+    FROM order_items AS oi
+    JOIN orders AS o ON oi.order_id = o.order_id
     WHERE o.order_status IN ('delivered', 'shipped')
     AND oi.price > 0
     ORDER BY oi.price
@@ -242,17 +242,17 @@ WHERE o.order_status IN ('delivered', 'shipped');
 SET @rowcount = 0;
 SET @total = (
     SELECT COUNT(*)
-    FROM order_items oi
-    JOIN orders o ON oi.order_id = o.order_id
+    FROM order_items AS oi
+    JOIN orders AS o ON oi.order_id = o.order_id
     WHERE o.order_status IN ('delivered', 'shipped')
-      AND oi.freight_value > 0
+    AND oi.freight_value > 0
 );
 
 SELECT ROUND(AVG(freight_value), 2) AS mediana_flete
 FROM (
     SELECT oi.freight_value, @rowcount := @rowcount + 1 AS fila
-    FROM order_items oi
-    JOIN orders o ON oi.order_id = o.order_id
+    FROM order_items AS oi
+    JOIN orders AS o ON oi.order_id = o.order_id
     WHERE o.order_status IN ('delivered', 'shipped')
     AND oi.freight_value > 0
     ORDER BY oi.freight_value
