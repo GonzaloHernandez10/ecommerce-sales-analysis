@@ -325,3 +325,67 @@ considerablemente el promedio.
   comportamiento real del negocio y su análisis es valioso para el Acto 3.
 
 ---
+
+## EDA 6 — Distribución de calificaciones de clientes
+
+**Pregunta:** ¿Qué calificaciones existen y cómo se distribuyen?
+
+**Query:**
+```sql
+SELECT
+    orv.review_score,
+    COUNT(*)                                              AS total_puntuacion,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2)    AS total_puntuacion_porcentaje
+FROM order_reviews AS orv
+JOIN orders AS o ON orv.order_id = o.order_id
+WHERE o.order_status IN ('delivered', 'shipped')
+GROUP BY orv.review_score
+ORDER BY orv.review_score DESC;
+```
+
+**Hallazgos:**
+
+| Calificación | Total reseñas | Porcentaje |
+|---|---|---|
+| 5 — Muy satisfecho | 21,618 | 59.14% |
+| 4 — Satisfecho | 7,012 | 19.18% |
+| 3 — Indiferente | 3,060 | 8.37% |
+| 2 — Insatisfecho | 1,144 | 3.13% |
+| 1 — Muy insatisfecho | 3,720 | 10.18% |
+
+**Segmentación de reseñas por sentimiento:**
+
+| Segmento | Calificaciones | Porcentaje |
+|---|---|---|
+| Positivo | 4 y 5 | 78.32% |
+| Neutro | 3 | 8.37% |
+| Negativo | 1 y 2 | 13.31% |
+
+Se utiliza el criterio estricto para la segmentación: una calificación de 3 sobre
+5 en e-commerce indica una experiencia que no cumplió expectativas aunque tampoco
+fue desastrosa, por lo que se clasifica como neutra y no como positiva.
+
+**Interpretación estadística y de negocio:**
+
+La distribución de calificaciones presenta una concentración marcada en el extremo
+positivo. el 59.14% de los clientes otorgó la calificación máxima. Sin embargo,
+el 13.31% de reseñas negativas (calificaciones 1 y 2) representa el segmento de mayor interés analítico: Esto se podria interpretar con el **principio de pareto**, identificar qué factores influyen en ese 13% de insatisfacción permitiría resolver el problema que afecta a la mayoría de los clientes inconformes.
+
+Es relevante destacar que la calificación 1 (10.18%) supera ampliamente a la
+calificación 2 (3.13%), lo que sugiere que cuando un cliente está insatisfecho,
+su experiencia tiende a ser muy negativa y no moderadamente negativa. Esto refuerza
+la hipótesis de que el problema de insatisfacción tiene causas concretas e
+identificables, no una degradación gradual de la experiencia.
+
+**Decisiones analíticas:**
+
+- Las queries de análisis de satisfacción usarán el criterio estricto:
+  calificaciones 4 y 5 = positivas, 3 = neutra, 1 y 2 = negativas.
+- Al cruzar calificaciones con categorías y tiempos de entrega en el Acto 2
+  se filtrará únicamente `order_status = 'delivered'`, ya que las órdenes
+  `shipped` no tienen reseña asociada.
+- Todos los porcentajes se calculan sobre el total de reseñas disponibles
+  (36,554), no sobre el total de órdenes válidas (97,585), ya que el 62.6%
+  de las órdenes no tiene reseña asociada — contexto documentado en el EDA 4.
+
+---
