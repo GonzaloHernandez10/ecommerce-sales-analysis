@@ -332,15 +332,14 @@ considerablemente el promedio.
 
 **Query:**
 ```sql
-SELECT
-    orv.review_score,
-    COUNT(*)                                              AS total_puntuacion,
-    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2)    AS total_puntuacion_porcentaje
-FROM order_reviews AS orv
-JOIN orders AS o ON orv.order_id = o.order_id
+SELECT orw.review_score,
+		COUNT(*) AS total_puntuacion,
+		ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2) AS total_puntuacion_porcentaje
+FROM order_reviews AS orw
+JOIN orders AS o ON orw.order_id = o.order_id
 WHERE o.order_status IN ('delivered', 'shipped')
-GROUP BY orv.review_score
-ORDER BY orv.review_score DESC;
+GROUP BY orw.review_score
+ORDER BY orw.review_score DESC;
 ```
 
 **Hallazgos:**
