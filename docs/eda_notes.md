@@ -388,3 +388,64 @@ identificables, no una degradación gradual de la experiencia.
   de las órdenes no tiene reseña asociada — contexto documentado en el EDA 4.
 
 ---
+
+### EDA 7 — Verificación de duplicados en tablas principales
+
+**Pregunta:** ¿Existen registros duplicados en las tablas clave del análisis?
+
+**Query:**
+```sql
+-- ¿Hay ordenes duplicadas?
+SELECT o.order_id, COUNT(*) AS repeticiones
+FROM orders AS o
+GROUP BY o.order_id
+HAVING COUNT(*) > 1;
+
+-- ¿Hay clientes duplicados?
+SELECT c.customer_id, COUNT(*) AS repeticiones
+FROM customers AS c
+GROUP BY c.customer_id
+HAVING COUNT(*) > 1;
+
+-- ¿Hay items duplicados?
+SELECT oi.order_id, oi.order_item_id, COUNT(*) AS repeticiones 
+FROM order_items AS oi
+GROUP BY oi.order_id, oi.order_item_id
+HAVING COUNT(*) > 1;
+
+-- ¿Hay ordenes pagadas duplicadas?
+SELECT op.order_id, op.payment_sequential, COUNT(*) AS repeticiones 
+FROM order_payments AS op
+GROUP BY op.order_id, op.payment_sequential
+HAVING COUNT(*) > 1;
+
+-- ¿Hay reseñas duplicadas?
+SELECT orr.review_id, COUNT(*) AS repeticiones
+FROM order_reviews AS orr
+GROUP BY orr.review_id 
+HAVING COUNT(*) > 1;
+```
+
+**Hallazgos:**
+
+| Tabla | Clave verificada | Duplicados |
+|---|---|---|
+| orders | order_id | 0 |
+| customers | customer_id | 0 |
+| order_items | (order_id, order_item_id) | 0 |
+| order_payments | (order_id, payment_sequential) | 0 |
+| order_reviews | review_id | 0 |
+
+Todas las tablas principales están libres de duplicados. En `order_items` y
+`order_payments` se verificó la clave compuesta en lugar del `order_id` simple,
+ya que por diseño del modelo relacional una orden puede tener múltiples ítems
+y múltiples pagos. La repetición de `order_id` en esas tablas es intencional
+y no constituye un duplicado.
+
+**Nota:** Durante la carga inicial de `order_reviews` se detectaron y descartaron
+registros con `review_id` duplicado en el CSV fuente mediante la cláusula `IGNORE`
+en el `LOAD DATA`. El dataset final de reseñas no contiene duplicados.
+Detalle completo en `docs/setup_notes.md` — Problema 5b.
+
+**Decisión analítica:**
+No se requiere ninguna acción de limpieza adicional por duplicados.
