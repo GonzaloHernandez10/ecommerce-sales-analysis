@@ -385,7 +385,7 @@ identificables, no una degradación gradual de la experiencia.
   `shipped` no tienen reseña asociada.
 - Todos los porcentajes se calculan sobre el total de reseñas disponibles
   (36,554), no sobre el total de órdenes válidas (97,585), ya que el 62.6%
-  de las órdenes no tiene reseña asociada — contexto documentado en el EDA 4.
+  de las órdenes no tiene reseña asociada, contexto documentado en el EDA 4.
 
 ---
 
@@ -445,7 +445,7 @@ y no constituye un duplicado.
 **Nota:** Durante la carga inicial de `order_reviews` se detectaron y descartaron
 registros con `review_id` duplicado en el CSV fuente mediante la cláusula `IGNORE`
 en el `LOAD DATA`. El dataset final de reseñas no contiene duplicados.
-Detalle completo en `docs/setup_notes.md` — Problema 5b.
+Detalle completo en `docs/setup_notes.md`, Problema 5b.
 
 **Decisión analítica:**
 No se requiere ninguna acción de limpieza adicional por duplicados.
