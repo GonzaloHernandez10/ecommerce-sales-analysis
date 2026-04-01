@@ -558,7 +558,7 @@ LIMIT 10;
 | Sin voucher | 242 |
 
 El umbral de 1 BRL se usó para descartar diferencias de centavos causadas por
-redondeo en operaciones decimales — no representan errores reales en los datos.
+redondeo en operaciones decimales, no representan errores reales en los datos.
 
 **Proceso de investigación:**
 
