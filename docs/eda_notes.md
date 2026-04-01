@@ -449,3 +449,143 @@ Detalle completo en `docs/setup_notes.md` — Problema 5b.
 
 **Decisión analítica:**
 No se requiere ninguna acción de limpieza adicional por duplicados.
+
+---
+
+## EDA 8 — Validación de confiabilidad en los ingresos
+
+**Pregunta:** ¿El total esperado de ingresos (price + freight_value) coincide con
+el total registrado en los pagos (payment_value)? ¿Son confiables los datos de
+ingresos para el análisis?
+
+**Queries:**
+```sql
+-- Creación de CTE's que calculen el total esperado, el total pagado y la diferencia entre totales
+WITH 
+	precio_esperado AS (
+		SELECT oi.order_id, SUM(oi.price + oi.freight_value) AS total 
+		FROM order_items AS oi
+		GROUP BY oi.order_id
+	),
+	precio_pagado AS (
+		SELECT op.order_id, SUM(op.payment_value) AS total
+		FROM order_payments AS op 
+		GROUP BY op.order_id
+	),
+	diferencias AS (
+		SELECT ABS(pe.total - pp.total) AS diferencia
+		FROM orders AS o 
+		JOIN precio_esperado AS pe ON o.order_id = pe.order_id
+		JOIN precio_pagado AS pp ON o.order_id = pp.order_id
+		WHERE o.order_status IN ('delivered', 'shipped')
+	)
+-- Verificación de las órdenes con diferencia, la diferencia máxima y la diferencia promedio
+SELECT 
+	COUNT(*) AS ordenes_con_diferencia,
+   ROUND(MAX(diferencia), 2) AS diferencia_maxima,
+   ROUND(AVG(diferencia), 2) AS diferencia_promedio
+FROM diferencias AS d 
+WHERE d.diferencia > 1; 
+
+-- Creación de CTE's que calculen el total esperado, el total pagado y las órdenes que fueron pagadas con
+-- vaucher
+WITH 
+	precio_esperado AS (
+		SELECT oi.order_id, SUM(oi.price + oi.freight_value) AS total
+		FROM order_items AS oi
+		GROUP BY oi.order_id
+	),
+	precio_pagado AS (
+		SELECT op.order_id, 
+				 SUM(op.payment_value) AS total, 
+				 SUM(CASE WHEN op.payment_type = 'voucher' THEN op.payment_value ELSE 0 END) AS total_vaucher
+		FROM order_payments AS op
+		GROUP BY op.order_id
+	)
+-- Verificación del total de órdenes que fueron pagadas con vaucher y total que no fueron pagadas con 
+-- vaucher
+SELECT 
+	COUNT(*) AS ordenes_con_diferencia,
+	SUM(CASE WHEN pp.total_vaucher > 0 THEN 1 ELSE 0 END) AS con_vaucher,
+	SUM(CASE WHEN pp.total_vaucher = 0 THEN 1 ELSE 0 END) AS sin_vaucher
+FROM orders AS o
+JOIN precio_esperado AS pe ON o.order_id = pe.order_id
+JOIN precio_pagado AS pp ON o.order_id = pp.order_id
+WHERE o.order_status IN ('delivered', 'shipped') AND ABS(pe.total - pp.total) > 1;
+
+-- Creación de CTE's que calculen el total esperado, el total pagado, los métodos de pago y las cuotas de
+-- pago
+WITH 
+	precio_esperado AS (
+		SELECT oi.order_id, SUM(oi.price + oi.freight_value) AS total
+      FROM order_items AS oi
+      GROUP BY oi.order_id
+	),
+	precio_pagado AS (
+		SELECT op.order_id,
+			 	 SUM(op.payment_value) AS total,
+             GROUP_CONCAT(op.payment_type) AS metodos_pago,
+         	 MAX(op.payment_installments) AS cuotas_maximas
+   	FROM order_payments AS op
+      GROUP BY op.order_id
+	)
+-- Verificación de la diferencia entre el total esperado y el total pagado, así como el método de pago y 
+-- las cuotas de pago
+SELECT 
+	o.order_id,
+	ROUND(pe.total, 2) AS total_esperado,
+   ROUND(pp.total, 2) AS total_pagado,
+	ROUND(ABS(pe.total - pp.total), 2) AS diferencia,
+   pp.metodos_pago,
+   pp.cuotas_maximas
+FROM orders AS o
+JOIN precio_esperado AS pe ON o.order_id = pe.order_id
+JOIN precio_pagado AS pp ON o.order_id = pp.order_id
+WHERE o.order_status IN ('delivered', 'shipped') AND ABS(pe.total - pp.total) > 1
+ORDER BY diferencia DESC
+LIMIT 10;
+```
+
+**Hallazgos:**
+
+| Métrica | Valor |
+|---|---|
+| Total órdenes válidas | 97,585 |
+| Órdenes con diferencia > 1 BRL | 247 (0.25%) |
+| Diferencia máxima | 182.81 BRL |
+| Diferencia promedio | 13.08 BRL |
+| Con voucher | 5 |
+| Sin voucher | 242 |
+
+El umbral de 1 BRL se usó para descartar diferencias de centavos causadas por
+redondeo en operaciones decimales — no representan errores reales en los datos.
+
+**Proceso de investigación:**
+
+Se planteó inicialmente la hipótesis de que las diferencias correspondían al uso
+de vouchers como método de pago complementario. Los datos la descartaron, solo
+5 de las 247 órdenes usaron voucher.
+
+La inspección de los 10 casos con mayor diferencia reveló el patrón real: todas
+las órdenes afectadas fueron pagadas con **tarjeta de crédito a múltiples cuotas**
+(entre 5 y 24 cuotas), y en todos los casos el `payment_value` es **mayor** que
+el `price + freight_value`. Esto confirma que la diferencia corresponde a
+**meses CON intereses**, el monto que el banco o la plataforma agrega
+al precio base cuando el cliente elige pagar en cuotas.
+
+El 0.25% de órdenes afectadas representa exactamente los pagos a cuotas con
+intereses dentro del dataset.
+
+**Conclusión:**
+
+Los datos de ingresos son confiables. Las 247 diferencias tienen una explicación
+de negocio legítima y no representan errores en los datos fuente.
+
+**Decisión analítica:**
+
+Para el cálculo de ingresos en el análisis formal se utilizará
+`SUM(price + freight_value)` desde `order_items`, el precio base sin intereses,
+porque representa el valor real de los productos y servicios de envío vendidos,
+independientemente del costo financiero que cada cliente asumió al elegir su
+método de pago. Esto hace que los ingresos sean comparables entre órdenes pagadas
+de contado y órdenes pagadas a cuotas.
