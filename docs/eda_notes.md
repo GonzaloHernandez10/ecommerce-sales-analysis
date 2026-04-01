@@ -589,3 +589,5 @@ porque representa el valor real de los productos y servicios de envío vendidos,
 independientemente del costo financiero que cada cliente asumió al elegir su
 método de pago. Esto hace que los ingresos sean comparables entre órdenes pagadas
 de contado y órdenes pagadas a cuotas.
+
+---
