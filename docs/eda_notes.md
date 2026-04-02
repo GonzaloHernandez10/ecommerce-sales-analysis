@@ -53,7 +53,7 @@ El dataset cubre un periodo de aproximadamente 25 meses:
 | ultima_orden  | 2018-10-17 17:30:18 |
 
 **Decisión analítica:**
-Tres consideraciones para el análisis temporal:
+Dos consideraciones para el análisis temporal:
 
 - Los meses de septiembre a diciembre de 2016 representan el periodo de arranque
   de Olist y tienen volúmenes bajos que no reflejan el negocio maduro. Se conservan
