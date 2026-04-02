@@ -320,7 +320,7 @@ considerablemente el promedio.
 - Al reportar ingresos promedio por categoría en el Acto 1 se complementará con
   la mediana para ofrecer una medida representativa más robusta ante la presencia de outliers.
 - Los 383 envíos gratuitos se incluyen en el cálculo de ingresos totales ya que
-  representan transacciones reales, solo que sin costo de flete para el cliente.
+  representan transacciones reales, solo que sin costo de envío para el cliente.
 - No se excluye ningún registro por precio, los valores extremos son parte del
   comportamiento real del negocio y su análisis es valioso para el Acto 3.
 
