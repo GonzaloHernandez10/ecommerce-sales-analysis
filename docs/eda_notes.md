@@ -126,7 +126,8 @@ necesarias para responder las 10 preguntas del análisis.
 
 ```sql
 -- Verificación de cuantas ordenes, con estatus 'delivered' o 'shipped', 
--- no tienen fecha de compra o fecha de entrega registrada
+-- no tienen fecha de compra, fecha de entrega registrada o una fecha de 
+-- de entrega estimada
 SELECT 
 	SUM(
 		CASE WHEN o.order_purchase_timestamp IS NULL THEN 1 ELSE 0 END
