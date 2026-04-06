@@ -42,10 +42,17 @@ SELECT
     MAX(o.order_purchase_timestamp) AS ultima_orden
 FROM orders AS o
 WHERE o.order_purchase_timestamp IS NOT NULL;
+
+-- Verificación de fechas ilógicas en las ordenes
+SELECT COUNT(*) AS fechas_ilogicas
+FROM orders AS o
+WHERE o.order_delivered_customer_date < o.order_purchase_timestamp AND
+o.order_status = 'delivered' AND 
+o.order_delivered_customer_date IS NOT NULL;
 ```
 
 **Hallazgo:**
-El dataset cubre un periodo de aproximadamente 25 meses:
+El dataset cubre un periodo de aproximadamente 25 meses y no se presentan fechas ilógicas:
 
 | Campo | Valor |
 |---|---|
@@ -61,6 +68,8 @@ Dos consideraciones para el análisis temporal:
 - Octubre de 2018 es el último mes del dataset y está incompleto, por lo que
   su volumen no es comparable con meses anteriores. Se considerará este factor
   al interpretar la tendencia al final del periodo.
+- Ninguna orden tiene una fecha de entrega anterior a su fecha de compra. Los cálculos
+  de tiempo de entrega son coherentes y confiables en todo el dataset 
 
 ---
 
@@ -261,7 +270,8 @@ SELECT
 	ROUND(MIN(oi.price)) AS minimo_precio,
 	ROUND(MAX(oi.price)) AS maximo_precio,
 	ROUND(AVG(oi.price)) AS promedio_precio,
-	COUNT(CASE WHEN oi.price = 0 THEN 1 END) AS ceros_precio 
+	COUNT(CASE WHEN oi.price = 0 THEN 1 END) AS ceros_precio,
+	COUNT(CASE WHEN oi.price < 0 THEN 1 END) AS negativos_precio  
 FROM order_items AS oi
 JOIN orders AS o ON oi.order_id = o.order_id
 WHERE o.order_status IN ('delivered', 'shipped');
@@ -292,7 +302,8 @@ SELECT
 	ROUND(MIN(oi.freight_value)) AS minimo_precio_envio,
 	ROUND(MAX(oi.freight_value)) AS maximo_precio_envio,
 	ROUND(AVG(oi.freight_value)) AS promedio_precio_envio,
-	COUNT(CASE WHEN oi.freight_value = 0 THEN 1 END) AS ceros_precio_envio 
+	COUNT(CASE WHEN oi.freight_value = 0 THEN 1 END) AS ceros_precio_envio,
+	COUNT(CASE WHEN oi.freight_value < 0 THEN 1 END) AS negativos_precio_envio 
 FROM order_items AS oi
 JOIN orders AS o ON oi.order_id = o.order_id
 WHERE o.order_status IN ('delivered', 'shipped');
@@ -331,6 +342,7 @@ Al momento del análisis, 1 BRL ≈ 3.5 MXN.
 | Promedio | 120 | 20 |
 | Mediana | 44.95 | 8.14 |
 | Valores en cero | 0 | 383 |
+| Valores negativos | 0 | 0 |
 
 **Justificación estadística del cálculo de mediana**
 
@@ -382,6 +394,7 @@ considerablemente el promedio.
   representan transacciones reales, solo que sin costo de envío para el cliente.
 - No se excluye ningún registro por precio, los valores extremos son parte del
   comportamiento real del negocio y su análisis es valioso para el Acto 3.
+- No se presentan valores negativos e ilógicos, los precios son confiables. 
 
 ---
 
