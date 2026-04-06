@@ -221,12 +221,12 @@ FROM category_translation AS ct;
 | Columna | Tabla | Nulos | Interpretación |
 |---|---|---|---|
 | order_purchase_timestamp | orders | 0 | Sin problema |
-| order_delivered_customer_date | orders | 1,115 | 1,107 corresponden a órdenes `shipped` sin entrega confirmada. Los 8 restantes son órdenes `delivered` con fecha ausente — anomalía del dataset fuente |
+| order_delivered_customer_date | orders | 1,115 | 1,107 corresponden a órdenes `shipped` sin entrega confirmada. Los 8 restantes son órdenes `delivered` con fecha ausente, anomalía del dataset fuente |
 | order_estimated_delivery_date | orders | 0 | Sin problema |
 | price | order_items | 0 | Sin problema |
 | freight_value | order_items | 0 | Sin problema |
 | product_category_name | products | 1,564 | Productos sin categoría asignada en el dataset fuente |
-| review_score | order_reviews | 61,113 | Órdenes sin reseña — comportamiento normal, no todos los clientes califican |
+| review_score | order_reviews | 61,113 | Órdenes sin reseña, comportamiento normal, no todos los clientes califican |
 | customer_city | customers | 0 | Sin problema |
 | customer_state | customers | 0 | Sin problema |
 | payment_type | order_payments | 0 | Sin problema |
@@ -235,7 +235,7 @@ FROM category_translation AS ct;
 
 **Nota técnica sobre la query de calificaciones:**
 Se utilizó `NOT EXISTS` con subconsulta en lugar de `LEFT JOIN ... WHERE IS NULL`
-porque `NOT EXISTS` es más eficiente — se detiene al encontrar el primer match —
+porque `NOT EXISTS` es más eficiente, se detiene al encontrar el primer match,
 y evita el comportamiento impredecible de `NOT IN` cuando existen nulos en la
 subconsulta.
 
@@ -251,9 +251,9 @@ subconsulta.
 - Las conclusiones sobre satisfacción de clientes en el Acto 2 se presentarán
   con el contexto de que representan al 37.4% de los clientes que dejaron reseña
   (36,472 de 97,585 órdenes válidas), no al total.
-- El análisis geográfico del Acto 3 está garantizado — ningún cliente tiene
+- El análisis geográfico del Acto 3 está garantizado, ningún cliente tiene
   ciudad o estado nulo.
-- El análisis de métodos de pago es confiable — ninguna orden con estatus válido
+- El análisis de métodos de pago es confiable, ninguna orden con estatus válido
   tiene tipo de pago o número de cuotas nulo.
 
 ---
