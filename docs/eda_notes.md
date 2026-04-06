@@ -125,64 +125,85 @@ necesarias para responder las 10 preguntas del análisis.
 **Primera inspección — columnas inicialmente relevantes**
 
 ```sql
--- Nulos en fechas de órdenes con estatus válido
-SELECT
-    SUM(CASE WHEN o.order_purchase_timestamp      IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_compra,
-    SUM(CASE WHEN o.order_delivered_customer_date IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_entrega,
-    SUM(CASE WHEN o.order_estimated_delivery_date IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_estimada
+-- Verificación de cuantas ordenes, con estatus 'delivered' o 'shipped', 
+-- no tienen fecha de compra o fecha de entrega registrada
+SELECT 
+	SUM(
+		CASE WHEN o.order_purchase_timestamp IS NULL THEN 1 ELSE 0 END
+	) AS nulo_fecha_compra,
+	SUM(
+		CASE WHEN o.order_delivered_customer_date IS NULL THEN 1 ELSE 0 END
+	) AS nulo_fecha_entrega,
+	SUM(
+		CASE WHEN o.order_estimated_delivery_date IS NULL THEN 1 ELSE 0 END
+	) AS nulo_fecha_estimada_compra
 FROM orders AS o
 WHERE o.order_status IN ('delivered', 'shipped');
 
--- Nulos en precio y flete de ítems
-SELECT
-    SUM(CASE WHEN oi.price         IS NULL THEN 1 ELSE 0 END) AS nulos_precio_item,
-    SUM(CASE WHEN oi.freight_value IS NULL THEN 1 ELSE 0 END) AS nulos_envio_item
-FROM orders AS o
-JOIN order_items AS oi ON o.order_id = oi.order_id
+-- Verificación de cuantos items no tienen precio o 
+-- precio de envío registrado en base a las ordenes 
+-- con estatus 'delivered' o 'shipped'
+SELECT 
+	SUM(
+		CASE WHEN oi.price IS NULL THEN 1 ELSE 0 END
+	) AS nulos_precio_item,
+	SUM(
+		CASE WHEN oi.freight_value IS NULL THEN 1 ELSE 0 END
+	) AS nulos_envio_item
+FROM orders AS o 
+JOIN order_items AS oi 
+ON o.order_id = oi.order_id
 WHERE o.order_status IN ('delivered', 'shipped');
 
--- Nulos en categoría de producto
-SELECT
-    SUM(CASE WHEN p.product_category_name IS NULL THEN 1 ELSE 0 END) AS nulos_categoria
+-- Verificar cuantos productos no tienen una categoría
+-- registrada en base a las ordenes con estatus 
+-- 'delivered'o'shipped'
+SELECT 
+	SUM(
+		CASE WHEN p.product_category_name IS NULL THEN 1 ELSE 0 END
+	) nulos_categoria
 FROM order_items AS oi
 JOIN products AS p ON oi.product_id = p.product_id
-JOIN orders AS o   ON o.order_id    = oi.order_id
+JOIN orders AS o ON o.order_id = oi.order_id
 WHERE o.order_status IN ('delivered', 'shipped');
 
--- Órdenes sin calificación del cliente
+-- Verificación de cuentas ordenes, con estatus 'delivered' 
+-- o 'shipped', no tienen una calificación registrada
 SELECT COUNT(*) AS nulos_calificacion
 FROM orders AS o
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM order_reviews AS orv
-    WHERE o.order_id = orv.order_id
-)
-AND o.order_status IN ('delivered', 'shipped');
+WHERE NOT EXISTS(
+	SELECT 1
+	FROM order_reviews AS orv
+	WHERE o.order_id = orv.order_id
+) AND o.order_status IN ('delivered','shipped');
 ```
 
 **Segunda inspección — columnas adicionales de la vista**
 
 ```sql
--- Nulos en ciudad y estado del cliente
-SELECT
-    SUM(CASE WHEN c.customer_city  IS NULL THEN 1 ELSE 0 END) AS ciudades_nulas,
-    SUM(CASE WHEN c.customer_state IS NULL THEN 1 ELSE 0 END) AS estados_nulos
-FROM orders AS o
+-- Veficación de cuantos clientes no tienen una ciudad y 
+-- estado asociado
+SELECT 
+	SUM(CASE WHEN c.customer_city IS NULL THEN 1 ELSE 0 END) AS ciudades_nulas,
+	SUM(CASE WHEN c.customer_state IS NULL THEN 1 ELSE 0 END) AS estados_nulos 
+FROM orders AS o 
 JOIN customers AS c ON o.customer_id = c.customer_id
 WHERE o.order_status IN ('delivered', 'shipped');
 
--- Nulos en método de pago y número de cuotas
-SELECT
-    SUM(CASE WHEN op.payment_type         IS NULL THEN 1 ELSE 0 END) AS tipos_pago_nulos,
-    SUM(CASE WHEN op.payment_installments IS NULL THEN 1 ELSE 0 END) AS cuotas_nulas
+-- Verificación de posibles métodos de pago faltantes 
+-- por fallas en sistema u otras causas
+SELECT 
+	SUM(CASE WHEN op.payment_type IS NULL THEN 1 ELSE 0 END) AS tipos_pago_nulos,
+	SUM(CASE WHEN op.payment_installments IS NULL THEN 1 ELSE 0 END) AS cuotas_nulas
 FROM orders AS o
 JOIN order_payments AS op ON o.order_id = op.order_id
-WHERE o.order_status IN ('delivered', 'shipped');
+WHERE o.order_status IN ('delivered', 'shipped'); 
 
--- Nulos en traducciones de categorías
-SELECT
-    SUM(CASE WHEN ct.product_category_name_english IS NULL THEN 1 ELSE 0 END) AS categorias_nulas
-FROM category_translation AS ct;
+-- Verificación de valores faltantes en las traducciones 
+-- de las categorias
+SELECT 
+	SUM(CASE WHEN ct.product_category_name_english IS NULL THEN 1 ELSE 0 END) AS categorias_nulas
+FROM category_translation AS ct; 
 ```
 
 **Hallazgos consolidados:**
