@@ -30,7 +30,7 @@ los problemas y proponer en qué áreas enfocar la atención.
 
 ![Modelo relacional](docs/erd_olist.png)
 
-La tabla central es `orders` — casi toda la información del negocio pasa por ella.
+La tabla central es `orders`, casi toda la información del negocio pasa por ella.
 A partir de ahí se conectan las demás entidades del modelo:
 
 **customers** — Registra a cada cliente único que realizó al menos una compra.
@@ -188,7 +188,7 @@ fricción y qué acciones tendrían mayor impacto.
 
 - [x] Configuración de la base de datos en MySQL
 - [x] Carga y validación de los 8 archivos del dataset
-- [ ] Análisis exploratorio con SQL — inspección, limpieza y transformación
+- [x] Análisis exploratorio con SQL — inspección, limpieza y transformación
 - [ ] Análisis estadístico y visualizaciones en Excel
 - [ ] Comunicación de hallazgos
 
@@ -213,6 +213,6 @@ Este proyecto forma parte de un portafolio orientado a demostrar competencias
 en el ciclo completo de análisis de datos: extracción, limpieza, análisis y
 comunicación de resultados.
 
-📧 *tu correo*  
-💼 *tu LinkedIn*  
-🐙 *tu GitHub*
+📧 *correo*  
+💼 *LinkedIn*  
+🐙 *GitHub*
