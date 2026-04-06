@@ -116,20 +116,24 @@ fecha de entrega confirmada ni reseña asociada al momento del análisis.
 **Pregunta:** ¿Qué tan completos están los datos en las columnas relevantes para
 el análisis?
 
-**Columnas relevantes:** Para este punto, se determinaron las columnas `order_purchase_timestamp` y `order_delivered_customer_date` de la tabla `orders`, `price` y `freight_value` de la tabla `order_items` y `product_category_name` de la tabla `products` como columnas relevantes.
+**Contexto:** La verificación de nulos se realizó en dos momentos. Una primera
+inspección cubrió las columnas identificadas inicialmente como relevantes. Una
+segunda inspección amplió la verificación al resto de columnas que conformarían
+la vista `vw_orders_clean`, una vez definido el conjunto completo de columnas
+necesarias para responder las 10 preguntas del análisis.
 
-**Queries:**
+**Primera inspección — columnas inicialmente relevantes**
+
 ```sql
--- Verificación de cuantas ordenes, con estatus 'delivered' o 'shipped', 
--- no tienen fecha de compra o fecha de entrega registrada
+-- Nulos en fechas de órdenes con estatus válido
 SELECT
-    SUM(CASE WHEN o.order_purchase_timestamp IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_compra,
-    SUM(CASE WHEN o.order_delivered_customer_date IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_entrega
+    SUM(CASE WHEN o.order_purchase_timestamp      IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_compra,
+    SUM(CASE WHEN o.order_delivered_customer_date IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_entrega,
+    SUM(CASE WHEN o.order_estimated_delivery_date IS NULL THEN 1 ELSE 0 END) AS nulo_fecha_estimada
 FROM orders AS o
 WHERE o.order_status IN ('delivered', 'shipped');
 
--- Verificación de cuantos items no tienen precio o precio de envío registrado en
--- base a las ordenes con estatus 'delivered' o 'shipped'
+-- Nulos en precio y flete de ítems
 SELECT
     SUM(CASE WHEN oi.price         IS NULL THEN 1 ELSE 0 END) AS nulos_precio_item,
     SUM(CASE WHEN oi.freight_value IS NULL THEN 1 ELSE 0 END) AS nulos_envio_item
@@ -137,8 +141,7 @@ FROM orders AS o
 JOIN order_items AS oi ON o.order_id = oi.order_id
 WHERE o.order_status IN ('delivered', 'shipped');
 
--- Verificar cuantos productos no tienen una categoría registrada en base a las ordenes con
--- estatus 'delivered' o 'shipped'
+-- Nulos en categoría de producto
 SELECT
     SUM(CASE WHEN p.product_category_name IS NULL THEN 1 ELSE 0 END) AS nulos_categoria
 FROM order_items AS oi
@@ -146,8 +149,7 @@ JOIN products AS p ON oi.product_id = p.product_id
 JOIN orders AS o   ON o.order_id    = oi.order_id
 WHERE o.order_status IN ('delivered', 'shipped');
 
--- Verificación de cuentas ordenes, con estatus 'delivered' o 'shipped', no tienen una
--- calificación registrada
+-- Órdenes sin calificación del cliente
 SELECT COUNT(*) AS nulos_calificacion
 FROM orders AS o
 WHERE NOT EXISTS (
@@ -158,21 +160,52 @@ WHERE NOT EXISTS (
 AND o.order_status IN ('delivered', 'shipped');
 ```
 
-**Hallazgos:**
+**Segunda inspección — columnas adicionales de la vista**
 
-| Columna verificada | Nulos | Interpretación |
-|---|---|---|
-| order_purchase_timestamp | 0 | Sin problema. Todas las órdenes tienen fecha de compra. |
-| order_delivered_customer_date | 1,115 | 1,107 corresponden a órdenes con status `shipped` sin entrega confirmada. Los 8 restantes son órdenes `delivered` con fecha de entrega ausente, estos 8 registros representan una anomalía. |
-| price | 0 | Sin problema. Todos los ítems tienen precio registrado. |
-| freight_value | 0 | Sin problema. Todos los ítems tienen valor de flete registrado. |
-| product_category_name | 1,564 | Productos sin categoría asignada en el dataset fuente. Representa ítems cuya categoría no fue registrada por el vendedor. |
-| nulos_calificacion | 61,113 | Órdenes sin reseña asociada. Comportamiento normal, no todos los clientes dejan calificación. |
+```sql
+-- Nulos en ciudad y estado del cliente
+SELECT
+    SUM(CASE WHEN c.customer_city  IS NULL THEN 1 ELSE 0 END) AS ciudades_nulas,
+    SUM(CASE WHEN c.customer_state IS NULL THEN 1 ELSE 0 END) AS estados_nulos
+FROM orders AS o
+JOIN customers AS c ON o.customer_id = c.customer_id
+WHERE o.order_status IN ('delivered', 'shipped');
+
+-- Nulos en método de pago y número de cuotas
+SELECT
+    SUM(CASE WHEN op.payment_type         IS NULL THEN 1 ELSE 0 END) AS tipos_pago_nulos,
+    SUM(CASE WHEN op.payment_installments IS NULL THEN 1 ELSE 0 END) AS cuotas_nulas
+FROM orders AS o
+JOIN order_payments AS op ON o.order_id = op.order_id
+WHERE o.order_status IN ('delivered', 'shipped');
+
+-- Nulos en traducciones de categorías
+SELECT
+    SUM(CASE WHEN ct.product_category_name_english IS NULL THEN 1 ELSE 0 END) AS categorias_nulas
+FROM category_translation AS ct;
+```
+
+**Hallazgos consolidados:**
+
+| Columna | Tabla | Nulos | Interpretación |
+|---|---|---|---|
+| order_purchase_timestamp | orders | 0 | Sin problema |
+| order_delivered_customer_date | orders | 1,115 | 1,107 corresponden a órdenes `shipped` sin entrega confirmada. Los 8 restantes son órdenes `delivered` con fecha ausente — anomalía del dataset fuente |
+| order_estimated_delivery_date | orders | 0 | Sin problema |
+| price | order_items | 0 | Sin problema |
+| freight_value | order_items | 0 | Sin problema |
+| product_category_name | products | 1,564 | Productos sin categoría asignada en el dataset fuente |
+| review_score | order_reviews | 61,113 | Órdenes sin reseña — comportamiento normal, no todos los clientes califican |
+| customer_city | customers | 0 | Sin problema |
+| customer_state | customers | 0 | Sin problema |
+| payment_type | order_payments | 0 | Sin problema |
+| payment_installments | order_payments | 0 | Sin problema |
+| product_category_name_english | category_translation | 0 | Sin problema |
 
 **Nota técnica sobre la query de calificaciones:**
 Se utilizó `NOT EXISTS` con subconsulta en lugar de `LEFT JOIN ... WHERE IS NULL`
-porque `NOT EXISTS` es más eficiente, se detiene al encontrar el primer match,
-y evita el comportamiento impredecible de `NOT IN` cuando existen valores nulos en la
+porque `NOT EXISTS` es más eficiente — se detiene al encontrar el primer match —
+y evita el comportamiento impredecible de `NOT IN` cuando existen nulos en la
 subconsulta.
 
 **Decisiones analíticas:**
@@ -180,13 +213,17 @@ subconsulta.
 - Las queries que involucren tiempo de entrega filtrarán adicionalmente por
   `order_delivered_customer_date IS NOT NULL` para excluir los 1,115 registros
   sin fecha de entrega.
-- Las queries que involucren categoría excluirán los 1,564 productos sin
+- Las queries de análisis por categoría excluirán los 1,564 productos sin
   categoría con `WHERE product_category_name IS NOT NULL`. Para queries de
   ingresos totales o volumen estos registros sí se incluyen ya que su precio
-  es válido para el análisis.
+  es válido.
 - Las conclusiones sobre satisfacción de clientes en el Acto 2 se presentarán
-  bajo el contexto del 37.4% de los clientes que si dejaron una reseña
+  con el contexto de que representan al 37.4% de los clientes que dejaron reseña
   (36,472 de 97,585 órdenes válidas), no al total.
+- El análisis geográfico del Acto 3 está garantizado — ningún cliente tiene
+  ciudad o estado nulo.
+- El análisis de métodos de pago es confiable — ninguna orden con estatus válido
+  tiene tipo de pago o número de cuotas nulo.
 
 ---
 
