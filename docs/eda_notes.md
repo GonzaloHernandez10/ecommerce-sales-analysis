@@ -663,3 +663,117 @@ método de pago. Esto hace que los ingresos sean comparables entre órdenes paga
 de contado y órdenes pagadas a cuotas.
 
 ---
+
+# EDA 9 — Construcción de la vista vw_orders_clean
+
+**Objetivo:** Consolidar en una única fuente de datos limpia y confiable todas
+las columnas necesarias para responder las 10 preguntas del análisis formal,
+aplicando el único filtro compartido por todas las queries del análisis:
+el estatus de la orden. Los filtros específicos de cada columna se aplican
+individualmente en cada query según lo definido en el EDA.
+
+**Decisiones de diseño**
+
+**Tablas incluidas y tipo de JOIN:**
+
+| Tabla | Tipo de JOIN | Justificación |
+|---|---|---|
+| orders | Base | Tabla central del modelo relacional |
+| order_reviews | LEFT JOIN con subconsulta | El 62.6% de las órdenes no tiene reseña — un INNER JOIN descartaría esas órdenes. La subconsulta agrupa por order_id y calcula el promedio de review_score para consolidar órdenes con múltiples reseñas en una sola fila |
+| customers | INNER JOIN | Toda orden válida tiene un cliente asociado. Sin cliente la orden no tiene contexto geográfico |
+| order_items | INNER JOIN | Toda orden válida tiene al menos un ítem. Sin ítems no hay precio ni ingreso |
+| products | INNER JOIN | Verificado en el EDA que todo ítem tiene un product_id válido en products |
+| category_translation | LEFT JOIN | 1,564 productos no tienen categoría asignada. Un INNER JOIN descartaría esos ítems del análisis de ingresos totales donde su precio sí es válido |
+
+**Tablas excluidas y justificación:**
+
+| Tabla | Justificación |
+|---|---|
+| sellers | La única columna relevante es seller_id, que ya está disponible en order_items. El JOIN con sellers descartaba el 66% de los ítems por un problema de encoding en seller_id — anomalía del dataset fuente |
+| order_payments | El JOIN con order_payments generaba un producto cartesiano con order_items, multiplicando las filas por el número de métodos de pago. El análisis de métodos de pago se realizará con una query independiente directamente sobre las tablas originales |
+
+**Filtros aplicados**
+
+```sql
+WHERE o.order_status IN ('delivered', 'shipped')
+```
+
+Se excluyen los estados `canceled`, `unavailable`, `invoiced`, `processing`,
+`created` y `approved` — decisión documentada en el EDA 3.
+
+**Anomalía identificada durante la construcción**
+
+Durante la verificación de la vista se detectaron órdenes con hasta 21 ítems,
+lo que inicialmente sugirió un problema de duplicación. La investigación reveló
+que dichas órdenes tienen genuinamente ese número de ítems en `order_items`,
+con `order_item_id` secuenciales del 1 al 21. El caso más extremo corresponde
+a una orden de 21 unidades compradas, las cuales conforman grupos de tres diferentes
+tipos de productos.
+No se realizó ninguna corrección ya que los datos son legítimos.
+
+**Query final de la vista**
+
+```sql
+CREATE VIEW vw_orders_clean AS 
+SELECT
+	o.order_id,
+	o.order_status,
+	o.order_purchase_timestamp,
+	o.order_delivered_customer_date,
+	o.order_estimated_delivery_date,
+	orv.review_score,
+	oi.price,
+	oi.freight_value,
+	oi.seller_id,
+	c.customer_city,
+	c.customer_state,
+	ct.product_category_name_english
+FROM orders AS o
+LEFT JOIN(
+	SELECT order_id, ROUND(AVG(review_score),0) AS review_score
+   FROM order_reviews
+   GROUP BY order_id
+) AS orv ON o.order_id = orv.order_id
+JOIN customers AS c ON o.customer_id = c.customer_id
+JOIN order_items AS oi ON o.order_id = oi.order_id
+JOIN products p ON oi.product_id = p.product_id
+LEFT JOIN category_translation AS ct ON p.product_category_name = ct.product_category_name
+WHERE o.order_status IN ('delivered', 'shipped');
+```
+
+**Verificación final**
+
+```sql
+-- verificación del total de registros en la vista
+SELECT COUNT(*) AS total_registros_vista FROM vw_orders_clean;
+
+-- verificación del total de ordenes unicas en la vista
+SELECT COUNT(DISTINCT order_id) AS total_ordenes_unicas_vista FROM vw_orders_clean;
+```
+
+| Métrica | Valor esperado | Valor obtenido |
+|---|---|---|
+| Total registros | ~111,382 | 111,382 |
+| Órdenes distintas | ~97,585 | 97,584 |
+
+La diferencia de 1 orden en el conteo de órdenes distintas es estadísticamente
+insignificante y no afecta el análisis.
+
+**Columnas disponibles en la vista**
+
+| Columna | Tabla origen | Uso en el análisis |
+|---|---|---|
+| order_id | orders | Identificador único de orden |
+| order_status | orders | Filtrado por estado de orden en queries específicas |
+| order_purchase_timestamp | orders | Agrupación temporal — Acto 1 |
+| order_delivered_customer_date | orders | Cálculo de tiempo de entrega — Acto 2 |
+| order_estimated_delivery_date | orders | Cálculo de retraso vs fecha prometida — Acto 2 |
+| review_score | order_reviews | Análisis de satisfacción — Acto 2 |
+| price | order_items | Cálculo de ingresos — Actos 1 y 2 |
+| freight_value | order_items | Cálculo de ingresos — Actos 1 y 2 |
+| seller_id | order_items | Análisis de vendedores — Acto 3 |
+| customer_city | customers | Análisis geográfico — Acto 3 |
+| customer_state | customers | Análisis geográfico — Acto 3 |
+| product_category_name_english | category_translation | Análisis por categoría — Actos 1 y 2 |
+
+---
