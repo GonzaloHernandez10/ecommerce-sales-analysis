@@ -524,7 +524,7 @@ No se requiere ninguna acción de limpieza adicional por duplicados.
 
 ---
 
-## EDA 8 — Validación de confiabilidad en los ingresos
+### EDA 8 — Validación de confiabilidad en los ingresos
 
 **Pregunta:** ¿El total esperado de ingresos (price + freight_value) coincide con
 el total registrado en los pagos (payment_value)? ¿Son confiables los datos de
@@ -664,7 +664,7 @@ de contado y órdenes pagadas a cuotas.
 
 ---
 
-# EDA 9 — Construcción de la vista vw_orders_clean
+### EDA 9 — Construcción de la vista vw_orders_clean
 
 **Objetivo:** Consolidar en una única fuente de datos limpia y confiable todas
 las columnas necesarias para responder las 10 preguntas del análisis formal,
