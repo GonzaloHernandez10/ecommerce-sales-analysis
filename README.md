@@ -178,7 +178,7 @@ fricción y qué acciones tendrían mayor impacto.
 | 5 | ¿Qué categorías tienen peor calificación promedio? | 2 |
 | 6 | ¿Cuántos días tarda en promedio cada categoría en entregarse? | 2 |
 | 7 | ¿Hay correlación entre tiempo de entrega y calificación? | 2 |
-| 8 | ¿Qué estados concentran la tasa de ordenes más alta? | 3 |
+| 8 | ¿Qué estados concentran la tasa de ordenes e ingresos más alta? | 3 |
 | 9 | ¿Qué estados concentran los peores tiempos de entrega? | 3 |
 | 10 | ¿Cuál es la tasa de órdenes entregadas vs canceladas? | 3 |
 | 11 | ¿Qué vendedores tienen más volumen pero peor calificación? | 3 |
