@@ -200,6 +200,7 @@ fricción y qué acciones tendrían mayor impacto.
 **Acto 1: ¿Cómo están las ventas?**
 
 **¿Cuál es el ingreso total y número de órdenes por mes?**
+
 **Hallazgo:** Los datos de 2016 muestran volúmenes muy bajos y falta el mes de noviembre. El crecimiento en 2017 y 2018 es continuo, destacando noviembre de 2017 (Black Friday) con 8,552 órdenes y 1.16 millones de BRL en ingresos. Al final del periodo (septiembre-octubre de 2018), los datos caen de golpe a cero. Hay bajas estacionales predecibles en diciembre, febrero y a mitad de año.
 
 ---
