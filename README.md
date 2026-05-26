@@ -187,10 +187,10 @@ fricción y qué acciones tendrían mayor impacto.
 
 ### Estado del proyecto
 
-- [x] Configuración de la base de datos en MySQL
-- [x] Carga y validación de los 8 archivos del dataset
+- [x] Configuración de la base de datos en MySQL - extracción
+- [x] Carga y validación de los 8 archivos del dataset - extracción
 - [x] Análisis exploratorio con SQL — inspección, limpieza y transformación
-- [ ] Análisis estadístico y visualizaciones con Python
+- [ ] Análisis estadístico y visualizaciones con Python - carga y análisis
 - [ ] Comunicación de hallazgos
 
 ---
