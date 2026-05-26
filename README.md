@@ -6,7 +6,7 @@
 
 Este proyecto forma parte de un portafolio de análisis de datos orientado a demostrar
 competencias en extracción, agrupación, inspección, limpieza, transformación, análisis y comunicación de hallazgos utilizando
-SQL y Excel. El análisis se realiza sobre el dataset público de Olist, una plataforma
+SQL y Python. El análisis se realiza sobre el dataset público de Olist, una plataforma
 brasileña de e-commerce que conecta pequeños comerciantes con los principales marketplaces
 del país.
 
@@ -125,7 +125,7 @@ del portugués al inglés. Se usa para hacer el análisis más legible.
 |---|---|
 | MySQL | Almacenamiento, limpieza y extracción de datos mediante SQL |
 | HeidiSQL | Cliente de base de datos para ejecución de queries |
-| Excel | Análisis estadístico descriptivo y visualizaciones |
+| Python | Análisis estadístico descriptivo y visualizaciones |
 
 ---
 
@@ -142,8 +142,8 @@ ecommerce-sales-analysis/
 │   └── queries.sql           # Todas las consultas documentadas con su pregunta de negocio
 ├── data/
 │   └── output.csv            # Dataset consolidado exportado desde SQL
-└── excel/
-    └── dashboard.xlsx        # Análisis estadístico y visualizaciones
+└── py_analisis/
+    └── dashboard.py          # Análisis estadístico y visualizaciones
 ```
 
 ---
@@ -190,7 +190,7 @@ fricción y qué acciones tendrían mayor impacto.
 - [x] Configuración de la base de datos en MySQL
 - [x] Carga y validación de los 8 archivos del dataset
 - [x] Análisis exploratorio con SQL — inspección, limpieza y transformación
-- [ ] Análisis estadístico y visualizaciones en Excel
+- [ ] Análisis estadístico y visualizaciones con Python
 - [ ] Comunicación de hallazgos
 
 ---
