@@ -229,7 +229,7 @@ fricción y qué acciones tendrían mayor impacto.
 **Hallazgo:** Cuando un pedido llega a tiempo o antes de lo prometido, la calificación promedio es de 4.22 estrellas. Cuando el pedido se retrasa, la calificación se desploma a 2.33 estrellas.  
 **Recomendación:** El cliente castiga severamente la promesa rota de la entrega. Para reducir las quejas del 12.6%, la prioridad número uno debe ser mejorar el cumplimiento de las fechas estimadas.
 
-**Acto 3: ¿Dónde enfocar la solución?**
+**Acto 3 — ¿Dónde enfocar la solución?**
 
 **¿Qué estados concentran la tasa de órdenes e ingresos más alta?**  
 **Hallazgo:** Sao Paulo (SP) domina ampliamente el mercado con 40,501 órdenes y 5.76 millones de BRL en ingresos. Río de Janeiro (RJ) le sigue con ~2 millones de BRL y Minas Gerais (MG) con ~1.8 millones de BRL.  
