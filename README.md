@@ -203,6 +203,16 @@ fricción y qué acciones tendrían mayor impacto.
 **Hallazgo:** Los datos de 2016 muestran volúmenes muy bajos y falta el mes de noviembre. El crecimiento en 2017 y 2018 es continuo, destacando noviembre de 2017 (Black Friday) con 8,552 órdenes y 1.16 millones de BRL en ingresos. Al final del periodo (septiembre-octubre de 2018), los datos caen de golpe a cero. Hay bajas estacionales predecibles en diciembre, febrero y a mitad de año.  
 **Decisión analítica:** Decidí excluir el año 2016 y los meses finales de 2018 (septiembre y octubre) del análisis de tendencias en los gráficos. 2016 representa una fase piloto del negocio y los meses finales de 2018 están incompletos en el dataset. Incluirlos daría una falsa impresión de caída o estancamiento del negocio.
 
+**¿Cuáles son las 10 categorías con más ingresos?** 
+**Hallazgo:** El volumen de órdenes no siempre equivale a más ingresos. La categoría más vendida (`bed_bath_table` con 9,378 órdenes) generó 1.23 millones de BRL, mientras que `watches_gifts` generó más ingresos (1.28 millones de BRL) con casi la mitad de órdenes (5,565) debido a su alto valor unitario. Además, solo 5 categorías concentran el 31% del ingreso total de la empresa. 
+**Recomendación:** Sugiero al equipo comercial enfocar la captación de nuevos vendedores en las 5 categorías líderes (belleza, hogar, relojes, accesorios de computación, etc.) para diversificar la oferta en donde la plataforma ya es más rentable.
+
+**¿Cuál es el ticket promedio por categoría?** 
+**Hallazgo:** La categoría con el ticket promedio más alto es `computers` (1,283.98 BRL). Al cruzar esto con el volumen, note que las computadoras se compran poco pero caro, y los accesorios (`computers_accessories`) se compran de forma masiva y económica. Ninguna de las categorías de ticket promedio alto figura en el top de volumen, ya que corresponden a compras planificadas o industriales. 
+**Recomendación:** Recomiendo dividir el catálogo en dos estrategias de marketing diferentes: compras rápidas o por impulso (productos de bajo ticket y alta frecuencia) y compras planificadas (productos de alto ticket, que requieren mayor tiempo de decisión).
+
+**Acto 2 — ¿Dónde está el problema?**
+
 ---
 
 ### Conclusiones y recomendaciones
