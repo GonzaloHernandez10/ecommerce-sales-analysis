@@ -277,5 +277,5 @@ Este proyecto forma parte de un portafolio orientado a demostrar competencias
 en el ciclo completo de análisis de datos: extracción, limpieza, análisis y
 comunicación de resultados.
 
-📧 jorgegonzalo00@gmail.com 
-💼 https://www.linkedin.com/in/jorge-gonzalo-hern%C3%A1ndez-44a05524a/*  
+📧 jorgegonzalo00@gmail.com  
+💼 https://www.linkedin.com/in/jorge-gonzalo-hern%C3%A1ndez-44a05524a/
