@@ -1,5 +1,7 @@
 # Análisis de E-Commerce — Olist Brasil
 
+🌐 **[Ver Dashboard Interactivo en Vivo](https://GonzaloHernandez10.github.io/ecommerce-sales-analysis/)**
+
 ---
 
 ### Descripción general
@@ -92,8 +94,7 @@ A partir de ahí se conectan las demás entidades del modelo:
 - `seller_city` — ciudad donde opera el vendedor.
 - `seller_state` — estado donde opera el vendedor.
 
-**category_translation** — Tabla de referencia que traduce los nombres de categorías
-del portugués al inglés. Se usa para hacer el análisis más legible.
+**category_translation** — Tabla de referencia que traduce los nombres de categorías del portugués al inglés. Se usa para hacer el análisis más legible.
 - `product_category_name` — nombre de la categoría en portugués (clave primaria).
 - `product_category_name_english` — nombre de la categoría en inglés.
 
@@ -132,20 +133,23 @@ del portugués al inglés. Se usa para hacer el análisis más legible.
 
 ### Estructura del repositorio
 
-```
-ecommerce-sales-analysis/
-├── README.md
-├── docs/
-│   └── setup_notes.md        # Problemas encontrados durante la carga y soluciones implementadas
-│   └── eda_notes.md          # Documentación sobre cada query ejecutada durante el EDA
-│   └── erd_olist.png         # Imágen del modelo relacional de la base de datos
-├── sql/
-│   └── queries.sql           # Todas las consultas documentadas con su pregunta de negocio
-├── data/
-│   └── output.csv            # Dataset consolidado exportado desde SQL
-└── py_analisis/
-    └── visualizaciones.py    # Generador de visualizaciones
-```
+- 📄 [README.md](README.md) — Presentación principal del proyecto (portada).
+- 📄 [index.html](index.html) — Página de entrada del Dashboard interactivo.
+- 📄 [visualizaciones.py](visualizaciones.py) — Script generador de gráficos en Python.
+- 📄 [hallazgos.md](hallazgos.md) — Reporte detallado de negocio y recomendaciones.
+- 📄 [.gitignore](.gitignore) — Configuración para ignorar archivos temporales y locales.
+- 📁 [docs/](docs/) — Documentación adicional y recursos gráficos.
+  - 📄 [setup_notes.md](docs/setup_notes.md) — Bitácora de problemas y soluciones de carga de datos.
+  - 📄 [eda_notes.md](docs/eda_notes.md) — Notas detalladas de las consultas del análisis exploratorio.
+  - 🖼️ [erd_olist.png](docs/erd_olist.png) — Imagen del modelo relacional (DER).
+- 📁 [sql/](sql/) — Consultas de base de datos numeradas de forma secuencial.
+  - 📄 [01_creacion_tablas.sql](sql/01_creacion_tablas.sql)
+  - 📄 [02_carga_datos.sql](sql/02_carga_datos.sql)
+  - 📄 [03_vista_limpia.sql](sql/03_vista_limpia.sql)
+  - 📄 [04_analisis_eda.sql](sql/04_analisis_eda.sql)
+  - 📄 [05_consultas_actos.sql](sql/05_consultas_actos.sql)
+- 📁 [datos/](datos/) — Datos intermedios en formato CSV.
+- 📁 [visualizaciones/](visualizaciones/) — Archivos generados de gráficos (.png e .html).
 
 ---
 
@@ -154,17 +158,13 @@ ecommerce-sales-analysis/
 El análisis se desarrolla en tres actos que responden preguntas encadenadas narrativamente:
 
 **Acto 1 — ¿Cómo están las ventas?**  
-Establecer la línea base del negocio: volumen de órdenes, ingresos por periodo
-y categorías principales. Este acto describe el negocio con datos antes de emitir
-cualquier juicio sobre él.
+Establecer la línea base del negocio: volumen de órdenes, ingresos por periodo y categorías principales. Este acto describe el negocio con datos antes de emitir cualquier juicio sobre él.
 
 **Acto 2 — ¿Dónde está el problema?**  
-Cruzar ventas con calificaciones de clientes y tiempos de entrega para identificar
-si el problema es el producto, el precio o la logística.
+Cruzar ventas con calificaciones de clientes y tiempos de entrega para identificar si el problema es el producto, el precio o la logística.
 
 **Acto 3 — ¿Dónde enfocar la solución?**  
-Segmentar el problema geográficamente para identificar dónde se concentra la
-fricción y qué acciones tendrían mayor impacto.
+Segmentar el problema geográficamente para identificar dónde se concentra la fricción y qué acciones tendrían mayor impacto.
 
 ---
 
@@ -190,7 +190,7 @@ fricción y qué acciones tendrían mayor impacto.
 
 - [x] Configuración de la base de datos en MySQL - extracción
 - [x] Carga y validación de los 8 archivos del dataset - extracción
-- [x] EDA y análisis apartir de los actos con SQL - inspección, limpieza, transformación y análisis
+- [x] EDA y análisis a partir de los actos con SQL - inspección, limpieza, transformación y análisis
 - [x] Generación de visualizaciones con Python - carga y visualización
 - [x] Comunicación de hallazgos
 
@@ -200,23 +200,25 @@ fricción y qué acciones tendrían mayor impacto.
 
 **Acto 1 — ¿Cómo están las ventas?**  
 
-> **¿Cuál es el ingreso total y número de órdenes por mes?**   
+> **¿Cuál es el ingreso total y número de órdenes por mes?**  
 **Hallazgo:** Los datos de 2016 muestran volúmenes muy bajos y falta el mes de noviembre. El crecimiento en 2017 y 2018 es continuo, destacando noviembre de 2017 (Black Friday) con 8,552 órdenes y 1.16 millones de BRL en ingresos. Al final del periodo (septiembre-octubre de 2018), los datos caen de golpe a cero. Hay bajas estacionales predecibles en diciembre, febrero y a mitad de año.  
-**Decisión analítica:** Decidí excluir el año 2016 y los meses finales de 2018 (septiembre y octubre) del análisis de tendencias en los gráficos. 2016 representa una fase piloto del negocio y los meses finales de 2018 están incompletos en el dataset. Incluirlos daría una falsa impresión de caída o estancamiento del negocio.
+**Decisión analítica:** Decidí excluir el año 2016 y los meses finales de 2018 (septiembre y octubre) del análisis de tendencias en los gráficos. 2016 representa una fase piloto del negocio y los meses finales de 2018 están incompletos en el dataset. Incluirlos daría una falsa impresión de caída o estancamiento del negocio.  
+![Ventas Mensuales](visualizaciones/01_ventas_mensuales.png)
 
-> **¿Cuáles son las 10 categorías con más ingresos?**   
+> **¿Cuáles son las 10 categorías con más ingresos?**  
 **Hallazgo:** El volumen de órdenes no siempre equivale a más ingresos. La categoría más vendida (`bed_bath_table` con 9,378 órdenes) generó 1.23 millones de BRL, mientras que `watches_gifts` generó más ingresos (1.28 millones de BRL) con casi la mitad de órdenes (5,565) debido a su alto valor unitario. Además, solo 5 categorías concentran el 31% del ingreso total de la empresa.  
 **Recomendación:** Sugiero al equipo comercial enfocar la captación de nuevos vendedores en las 5 categorías líderes (belleza, hogar, relojes, accesorios de computación, etc.) para diversificar la oferta en donde la plataforma ya es más rentable.
 
 > **¿Cuál es el ticket promedio por categoría?**  
-**Hallazgo:** La categoría con el ticket promedio más alto es `computers` (1,283.98 BRL). Al cruzar esto con el volumen, note que las computadoras se compran poco pero caro, y los accesorios (`computers_accessories`) se compran de forma masiva y económica. Ninguna de las categorías de ticket promedio alto figura en el top de volumen, ya que corresponden a compras planificadas o industriales.   
+**Hallazgo:** La categoría con el ticket promedio más alto es `computers` (1,283.98 BRL). Al cruzar esto con el volumen, noté que las computadoras se compran poco pero caro, y los accesorios (`computers_accessories`) se compran de forma masiva y económica. Ninguna de las categorías de ticket promedio alto figura en el top de volumen, ya que corresponden a compras planificadas o industriales.   
 **Recomendación:** Recomiendo dividir el catálogo en dos estrategias de marketing diferentes: compras rápidas o por impulso (productos de bajo ticket y alta frecuencia) y compras planificadas (productos de alto ticket, que requieren mayor tiempo de decisión).
 
 **Acto 2 — ¿Dónde está el problema?**
 
 > **¿Cómo se distribuyen las calificaciones de clientes?**  
 **Hallazgo:** El 79% de las calificaciones son positivas (4 y 5 estrellas), el 8.4% son neutras (3 estrellas) y el 12.6% son insatisfechas (1 y 2 estrellas).  
-**Decisión analítica:** Tener más del 10% de calificaciones negativas es un foco rojo en e-commerce. Como en el análisis previo descartamos errores en cobros o precios, mi hipótesis principal es que la insatisfacción se debe a fallas en la entrega.
+**Decisión analítica:** Tener más del 10% de calificaciones negativas es un foco rojo en e-commerce. Como en el análisis previo descartamos errores en cobros o precios, mi hipótesis principal es que la insatisfacción se debe a fallas en la entrega.  
+![Distribución de Calificaciones](visualizaciones/02_distribucion_calificaciones.png)
 
 > **¿Qué categorías tienen peor calificación promedio?**  
 **Hallazgo:** Con un filtro de mínimo 50 órdenes para asegurar representatividad, la categoría peor evaluada de Olist es `office_furniture` (muebles de oficina) con un promedio de 3.5 estrellas. El resto del top 10 de peores categorías promedia menos de 4 estrellas y la mayoría son artículos pesados o voluminosos.  
@@ -228,7 +230,8 @@ fricción y qué acciones tendrían mayor impacto.
 
 > **¿Hay correlación entre tiempo de entrega y calificación?**  
 **Hallazgo:** Cuando un pedido llega a tiempo o antes de lo prometido, la calificación promedio es de 4.22 estrellas. Cuando el pedido se retrasa, la calificación se desploma a 2.33 estrellas.  
-**Recomendación:** El cliente castiga severamente la promesa rota de la entrega. Para reducir las quejas del 12.6%, la prioridad número uno debe ser mejorar el cumplimiento de las fechas estimadas.
+**Recomendación:** El cliente castiga severamente la promesa rota de la entrega. Para reducir las quejas del 12.6%, la prioridad número uno debe ser mejorar el cumplimiento de las fechas estimadas.  
+![Calificación por Tiempo de Entrega](visualizaciones/03_calificacion_por_tiempo_entrega.png)
 
 **Acto 3 — ¿Dónde enfocar la solución?**
 
@@ -238,7 +241,8 @@ fricción y qué acciones tendrían mayor impacto.
 
 > **¿Qué estados concentran los peores tiempos de entrega?**  
 **Hallazgo:** Los peores tiempos de entrega están en el norte del país, liderados por Amapá (28.2 días), Roraima (28.1 días) y Amazonas (26.3 días). En contraste, en Sao Paulo los envíos promedian 8.6 días.  
-**Recomendación:** El problema de entregas tardías está regionalizado y no afecta al motor del negocio (Sao Paulo). En lugar de reestructurar la logística nacional, la solución más rápida es corregir las fechas de entrega estimadas que se muestran a los clientes del norte en la web, evitando falsas expectativas.
+**Recomendación:** El problema de entregas tardías está regionalizado y no afecta al motor del negocio (Sao Paulo). En lugar de reestructurar la logística nacional, la solución más rápida es corregir las fechas de entrega estimadas que se muestran a los clientes del norte en la web, evitando falsas expectativas.  
+![Tiempo de Entrega por Estado](visualizaciones/04_tiempo_de_entrega_por_estado.png)
 
 > **¿Cuál es la tasa de órdenes entregadas vs canceladas?**  
 **Hallazgo:** El 99.36% de las órdenes (96,478) se entregó con éxito y solo el 0.64% (625) terminó en cancelación.  
@@ -246,36 +250,37 @@ fricción y qué acciones tendrían mayor impacto.
 
 > **¿Qué vendedores tienen más volumen pero peor calificación?**  
 **Hallazgo:** Filtrando vendedores con más de 100 órdenes, encontramos casos muy contrastantes. El vendedor `7c67e1448b00f6e969d365cea6b010ab` tiene un volumen de 980 órdenes pero una calificación promedio crítica de ~3.0. Por otro lado, el vendedor `3b15288545f8928d3e65a8f949a28291` mantiene una calificación casi perfecta con poco más de 100 ventas.  
-**Recomendación:** Los vendedores grandes con bajas calificaciones dañan la imagen del marketplace. Sugiero implementar alertas automáticas: si un vendedor supera las 100 ventas pero su promedio baja de 3.8 estrellas, se le debe auditar o reducir su visibilidad para proteger la reputación de Olist.
+**Recomendación:** Los vendedores grandes con bajas calificaciones dañan la imagen del marketplace. Sugiero implementar alertas automáticas: si un vendedor supera las 100 ventas pero su promedio baja de 3.8 estrellas, se le debe auditar o reducir su visibilidad para proteger la reputación de Olist.  
+![Vendedores Críticos](visualizaciones/05_vendedores_criticos.png)
 
 ---
 
 ### Conclusiones y recomendaciones
+
 Tras un análisis del ecosistema de datos de Olist (2016-2018), se identificaron varios puntos clave donde la empresa puede intervenir para proteger sus ingresos y mejorar la experiencia del cliente:  
 
-> **1. Logística y calificación del cliente"**    
+> **1. Logística y calificación del cliente**  
 **Conclusión:** La fiabilidad del sitio web y el procesamiento de pagos de Olist es excelente (con una bajísima tasa de cancelación de apenas **0.64%**). Sin embargo, el **12.6%** de los clientes califica su experiencia con 1 o 2 estrellas. El análisis demuestra que la insatisfacción no es por el producto, sino por la logística: cuando una entrega se retrasa, la calificación promedio cae drásticamente de **4.22 a 2.33 estrellas**.  
 **Recomendación:** La prioridad número uno debe ser mejorar el cumplimiento de las fechas estimadas de entrega. Asimismo, categorías pesadas como "muebles de oficina" (`office_furniture`) registran los peores tiempos de entrega (~21 días) y la peor calificación promedio (3.5 estrellas), sugiriendo la necesidad de contratar un servicio de transporte especializado para productos voluminosos. 
 
-> **2. Expectativas reales de entrega**
-**Conclusión:** El problema logístico aplica diferente segun la región. Mientras que en Sao Paulo (el motor del negocio con más de 40k órdenes) los envíos promedian **8.6 días**, en los estados del Norte como Amapá, Roraima y Amazonas, los tiempos se disparan a casi un mes (**26 a 28 días**).
-**Recomendación:** La solución más económica y rápida es **mejorar el calculo de estimación en la web** para los clientes del Norte. Al mostrarles fechas de entrega realistas desde el inicio, se evita romper la promesa de entrega y se neutraliza el castigo en las calificaciones.  
+> **2. Expectativas reales de entrega**  
+**Conclusión:** El problema logístico aplica diferente según la región. Mientras que en Sao Paulo (el motor del negocio con más de 40k órdenes) los envíos promedian **8.6 días**, en los estados del Norte como Amapá, Roraima y Amazonas, los tiempos se disparan a casi un mes (**26 a 28 días**).  
+**Recomendación:** La solución más económica y rápida es **mejorar el cálculo de estimación en la web** para los clientes del Norte. Al mostrarles fechas de entrega realistas desde el inicio, se evita romper la promesa de entrega y se neutraliza el castigo en las calificaciones.  
 
-> **3. Control de calidad del marketplace**
-**Conclusión:** Existen grandes vendedores con volúmenes masivos de ventas que están dañando la reputación de la plataforma debido a su pésimo servicio. El caso más crítico es el vendedor con ID corto `7c67e144`, quien acumula **980 órdenes** pero tiene una calificación promedio crítica de **~3.0 estrellas**.
+> **3. Control de calidad del marketplace**  
+**Conclusión:** Existen grandes vendedores con volúmenes masivos de ventas que están dañando la reputación de la plataforma debido a su pésimo servicio. El caso más crítico es el vendedor con ID corto `7c67e144`, quien acumula **980 órdenes** pero tiene una calificación promedio crítica de **~3.0 estrellas**.  
 **Recomendación:** Implementar un sistema de alertas automatizado. Si un vendedor supera las 100 ventas pero su calificación promedio acumulada cae por debajo de **3.8 estrellas**, su visibilidad en el marketplace debe ser penalizada o pausada hasta que pase una auditoría de servicio.  
 
->**4. Nuevo enfoque comercial**
-**Conclusión:** El volumen de ventas no siempre equivale a mayores ingresos. Categorías de bajo volumen y alto ticket como "computadoras" (`computers`) generan ingresos significativos con pocas transacciones, mientras que los accesorios se venden de forma masiva y económica. Además, solo 5 categorías concentran el **31% del ingreso total** de Olist.
+>**4. Nuevo enfoque comercial**  
+**Conclusión:** El volumen de ventas no siempre equivale a mayores ingresos. Categorías de bajo volumen y alto ticket como "computadoras" (`computers`) generan ingresos significativos con pocas transacciones, mientras que los accesorios se venden de forma masiva y económica. Además, solo 5 categorías concentran el **31% del ingreso total** de Olist.  
 **Recomendación:** Dividir la estrategia de marketing en dos pilares: compras de impulso/frecuencia (artículos de bajo ticket) y compras planificadas (artículos de alto ticket). Alinear los esfuerzos de captación de nuevos vendedores en las 5 categorías líderes para maximizar la rentabilidad de la plataforma.
 
 ---
 
 ### Sobre el autor
-Developer Frontend con gusto por el mundo del data.
-Este proyecto forma parte de un portafolio orientado a demostrar competencias
-en el ciclo completo de análisis de datos: extracción, limpieza, análisis y
-comunicación de resultados.
+
+Developer Frontend con gusto por el mundo del data.  
+Este proyecto forma parte de un portafolio orientado a demostrar competencias en el ciclo completo de análisis de datos: extracción, limpieza, análisis y comunicación de resultados.
 
 📧 jorgegonzalo00@gmail.com  
 💼 https://www.linkedin.com/in/jorge-gonzalo-hern%C3%A1ndez-44a05524a/
