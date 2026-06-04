@@ -272,7 +272,7 @@ Tras un análisis del ecosistema de datos de Olist (2016-2018), se identificaron
 ---
 
 ### Sobre el autor
-Developer Frontend con gusto del mundo del data.
+Developer Frontend con gusto por el mundo del data.
 Analista de datos en formación con background en desarrollo de aplicaciones web.
 Este proyecto forma parte de un portafolio orientado a demostrar competencias
 en el ciclo completo de análisis de datos: extracción, limpieza, análisis y
