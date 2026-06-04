@@ -134,17 +134,28 @@ del portugués al inglés. Se usa para hacer el análisis más legible.
 
 ```
 ecommerce-sales-analysis/
-├── README.md
-├── docs/
-│   └── setup_notes.md        # Problemas encontrados durante la carga y soluciones implementadas
-│   └── eda_notes.md          # Documentación sobre cada query ejecutada durante el EDA
-│   └── erd_olist.png         # Imágen del modelo relacional de la base de datos
-├── sql/
-│   └── queries.sql           # Todas las consultas documentadas con su pregunta de negocio
-├── data/
-│   └── output.csv            # Dataset consolidado exportado desde SQL
-└── py_analisis/
-    └── visualizaciones.py    # Generador de visualizaciones
+├── datos/                        # Archivos CSV intermedios (exportados de MySQL)
+│   ├── calificacion_por_tiempo_entrega.csv
+│   ├── distribucion_calificaciones.csv
+│   ├── tiempo_entrega_por_estado.csv
+│   ├── vendedores_criticos.csv
+│   └── ventas_mensuales.csv
+├── sql/                          # Scripts SQL numerados en orden de ejecución
+│   ├── 01_creacion_tablas.sql    
+│   ├── 02_carga_datos.sql        
+│   ├── 03_analisis_eda.sql       
+│   ├── 04_vista_limpia.sql     
+│   └── 05_consultas_actos.sql    
+├── visualizaciones/              # Gráficas generadas por el script de Python
+│   ├── 01_ventas_mensuales.html
+│   ├── 01_ventas_mensuales.png
+│   ├── 02_distribucion_calificaciones.html
+│   └── ... (demás archivos HTML y PNG)
+├── .gitignore                    # Archivos y carpetas que Git debe omitir
+├── index.html                    # Dashboard interactivo
+├── visualizaciones.py            # Script de Python para generar los gráficos
+├── hallazgos.md                  # Documento detallado de hallazgos que impactan el negocio
+└── README.md                     # Presentación general del proyecto
 ```
 
 ---
