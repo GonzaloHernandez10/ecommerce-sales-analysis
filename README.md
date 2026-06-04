@@ -133,23 +133,20 @@ A partir de ahí se conectan las demás entidades del modelo:
 
 ### Estructura del repositorio
 
-- 📄 [README.md](README.md) — Presentación principal del proyecto (portada).
-- 📄 [index.html](index.html) — Página de entrada del Dashboard interactivo.
-- 📄 [visualizaciones.py](visualizaciones.py) — Script generador de gráficos en Python.
-- 📄 [hallazgos.md](hallazgos.md) — Reporte detallado de negocio y recomendaciones.
-- 📄 [.gitignore](.gitignore) — Configuración para ignorar archivos temporales y locales.
-- 📁 [docs/](docs/) — Documentación adicional y recursos gráficos.
-  - 📄 [setup_notes.md](docs/setup_notes.md) — Bitácora de problemas y soluciones de carga de datos.
-  - 📄 [eda_notes.md](docs/eda_notes.md) — Notas detalladas de las consultas del análisis exploratorio.
-  - 🖼️ [erd_olist.png](docs/erd_olist.png) — Imagen del modelo relacional (DER).
-- 📁 [sql/](sql/) — Consultas de base de datos numeradas de forma secuencial.
-  - 📄 [01_creacion_tablas.sql](sql/01_creacion_tablas.sql)
-  - 📄 [02_carga_datos.sql](sql/02_carga_datos.sql)
-  - 📄 [03_vista_limpia.sql](sql/03_vista_limpia.sql)
-  - 📄 [04_analisis_eda.sql](sql/04_analisis_eda.sql)
-  - 📄 [05_consultas_actos.sql](sql/05_consultas_actos.sql)
-- 📁 [datos/](datos/) — Datos intermedios en formato CSV.
-- 📁 [visualizaciones/](visualizaciones/) — Archivos generados de gráficos (.png e .html).
+```
+ecommerce-sales-analysis/
+├── README.md
+├── docs/
+│   └── setup_notes.md        # Problemas encontrados durante la carga y soluciones implementadas
+│   └── eda_notes.md          # Documentación sobre cada query ejecutada durante el EDA
+│   └── erd_olist.png         # Imágen del modelo relacional de la base de datos
+├── sql/
+│   └── queries.sql           # Todas las consultas documentadas con su pregunta de negocio
+├── data/
+│   └── output.csv            # Dataset consolidado exportado desde SQL
+└── py_analisis/
+    └── visualizaciones.py    # Generador de visualizaciones
+```
 
 ---
 
@@ -259,13 +256,13 @@ Segmentar el problema geográficamente para identificar dónde se concentra la f
 
 Tras un análisis del ecosistema de datos de Olist (2016-2018), se identificaron varios puntos clave donde la empresa puede intervenir para proteger sus ingresos y mejorar la experiencia del cliente:  
 
-> **1. Logística y calificación del cliente**  
+> **1. Logística y calificación del cliente"**    
 **Conclusión:** La fiabilidad del sitio web y el procesamiento de pagos de Olist es excelente (con una bajísima tasa de cancelación de apenas **0.64%**). Sin embargo, el **12.6%** de los clientes califica su experiencia con 1 o 2 estrellas. El análisis demuestra que la insatisfacción no es por el producto, sino por la logística: cuando una entrega se retrasa, la calificación promedio cae drásticamente de **4.22 a 2.33 estrellas**.  
 **Recomendación:** La prioridad número uno debe ser mejorar el cumplimiento de las fechas estimadas de entrega. Asimismo, categorías pesadas como "muebles de oficina" (`office_furniture`) registran los peores tiempos de entrega (~21 días) y la peor calificación promedio (3.5 estrellas), sugiriendo la necesidad de contratar un servicio de transporte especializado para productos voluminosos. 
 
-> **2. Expectativas reales de entrega**  
-**Conclusión:** El problema logístico aplica diferente según la región. Mientras que en Sao Paulo (el motor del negocio con más de 40k órdenes) los envíos promedian **8.6 días**, en los estados del Norte como Amapá, Roraima y Amazonas, los tiempos se disparan a casi un mes (**26 a 28 días**).  
-**Recomendación:** La solución más económica y rápida es **mejorar el cálculo de estimación en la web** para los clientes del Norte. Al mostrarles fechas de entrega realistas desde el inicio, se evita romper la promesa de entrega y se neutraliza el castigo en las calificaciones.  
+> **2. Expectativas reales de entrega**
+**Conclusión:** El problema logístico aplica diferente segun la región. Mientras que en Sao Paulo (el motor del negocio con más de 40k órdenes) los envíos promedian **8.6 días**, en los estados del Norte como Amapá, Roraima y Amazonas, los tiempos se disparan a casi un mes (**26 a 28 días**).
+**Recomendación:** La solución más económica y rápida es **mejorar el calculo de estimación en la web** para los clientes del Norte. Al mostrarles fechas de entrega realistas desde el inicio, se evita romper la promesa de entrega y se neutraliza el castigo en las calificaciones.  
 
 > **3. Control de calidad del marketplace**  
 **Conclusión:** Existen grandes vendedores con volúmenes masivos de ventas que están dañando la reputación de la plataforma debido a su pésimo servicio. El caso más crítico es el vendedor con ID corto `7c67e144`, quien acumula **980 órdenes** pero tiene una calificación promedio crítica de **~3.0 estrellas**.  
