@@ -1,0 +1,12 @@
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE y Configuraciones Locales
+.vscode/
+.idea/
+.DS_Store
+
+# Temporales de Office
+~$*.docx

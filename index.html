@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olist E-Commerce - Dashboard de Visualizaciones</title>
+    <!-- Importación de tipografía moderna desde Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f4f6f9;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        header {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        /* DASHBOARD CONTAINER */
+        .dashboard-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(30, 41, 59, 0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* NAVEGACIÓN (BOTONES) */
+        .dashboard-nav {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            background: none;
+            border: none;
+            padding: 10px 18px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #475569;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background-color: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .nav-btn.active {
+            background-color: #2b5c8f;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(43, 92, 143, 0.2);
+        }
+
+        /* CUERPO DEL DASHBOARD */
+        .dashboard-body {
+            width: 100%;
+            height: 70vh;
+            min-height: 500px;
+            position: relative;
+            background-color: #ffffff;
+        }
+
+        /* IFRAME */
+        #grafico-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* PIE DE PÁGINA */
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        /* MEDIA QUERIES (RESPONSIVO) */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .dashboard-nav {
+                flex-direction: column;
+                width: 100%;
+            }
+            .nav-btn {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .dashboard-body {
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Análisis E-Commerce Olist</h1>
+        <p>Dashboard de Visualizaciones Interactivas (Plotly)</p>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Navegación -->
+        <nav class="dashboard-nav">
+            <button class="nav-btn active" data-target="visualizaciones/01_ventas_mensuales.html">📈 Ventas Mensuales</button>
+            <button class="nav-btn" data-target="visualizaciones/02_distribucion_calificaciones.html">⭕ Satisfacción</button>
+            <button class="nav-btn" data-target="visualizaciones/03_calificacion_por_tiempo_entrega.html">📊 Calificación vs. Retraso</button>
+            <button class="nav-btn" data-target="visualizaciones/04_tiempo_de_entrega_por_estado.html">🗺️ Logística por Estado</button>
+            <button class="nav-btn" data-target="visualizaciones/05_vendedores_criticos.html">🎯 Vendedores Críticos</button>
+        </nav>
+
+        <!-- Cuerpo del Dashboard -->
+        <main class="dashboard-body">
+            <iframe id="grafico-viewer" src="visualizaciones/01_ventas_mensuales.html" title="Visualizador de gráficos"></iframe>
+        </main>
+    </div>
+
+    <footer>
+        <p>Portafolio de Análisis de Datos | Olist E-Commerce Project</p>
+    </footer>
+
+    <!-- LÓGICA DE NAVEGACIÓN -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.nav-btn');
+            const iframe = document.getElementById('grafico-viewer');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 1. Quitar la clase active del botón anterior de manera segura
+                    const activeBtn = document.querySelector('.nav-btn.active');
+                    if (activeBtn) {
+                        activeBtn.classList.remove('active');
+                    }
+
+                    // 2. Agregar la clase active al botón actual
+                    button.classList.add('active');
+
+                    // 3. Cambiar la ruta del iframe al archivo HTML correspondiente
+                    const targetUrl = button.getAttribute('data-target');
+                    iframe.src = targetUrl;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
