@@ -125,8 +125,8 @@ del portugués al inglés. Se usa para hacer el análisis más legible.
 |---|---|
 | MySQL | Almacenamiento, limpieza y extracción de datos mediante SQL |
 | HeidiSQL | Cliente de base de datos para ejecución de queries |
-| Python | Lenguaje para generar visualizaciones |
-| JS y HTML | Lenguajes para creación de dashboard |
+| Python | Creación de visualizaciones |
+| JS y HTML | Creación de dashboard |
 
 ---
 
