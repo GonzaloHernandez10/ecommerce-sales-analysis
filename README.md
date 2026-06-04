@@ -134,28 +134,28 @@ del portugués al inglés. Se usa para hacer el análisis más legible.
 
 ```
 ecommerce-sales-analysis/
-├── datos/                        # Archivos CSV intermedios (exportados de MySQL)
+├── README.md                 # Presentación principal del proyecto (portada)
+├── index.html                # Página de entrada del Dashboard (raíz para GitHub Pages)
+├── visualizaciones.py        # Script de Python que genera los gráficos
+├── hallazgos.md              # Reporte detallado de negocio y recomendaciones
+├── .gitignore                # Archivo de configuración para omitir archivos temporales
+├── docs/                     # Documentación técnica adicional y diagramas
+│   ├── setup_notes.md        # Problemas encontrados en la carga y soluciones
+│   ├── eda_notes.md          # Documentación detallada del EDA
+│   └── erd_olist.png         # Imagen del modelo relacional (DER)
+├── sql/                      # Scripts SQL organizados y numerados secuencialmente
+│   ├── 01_creacion_tablas.sql
+│   ├── 02_carga_datos.sql
+│   ├── 03_analisis_eda.sql
+│   ├── 04_vista_limpia.sql
+│   └── 05_consultas_actos.sql
+├── datos/                    # Archivos CSV intermedios (salidas de SQL)
 │   ├── calificacion_por_tiempo_entrega.csv
-│   ├── distribucion_calificaciones.csv
-│   ├── tiempo_entrega_por_estado.csv
-│   ├── vendedores_criticos.csv
-│   └── ventas_mensuales.csv
-├── sql/                          # Scripts SQL numerados en orden de ejecución
-│   ├── 01_creacion_tablas.sql    
-│   ├── 02_carga_datos.sql        
-│   ├── 03_analisis_eda.sql       
-│   ├── 04_vista_limpia.sql     
-│   └── 05_consultas_actos.sql    
-├── visualizaciones/              # Gráficas generadas por el script de Python
-│   ├── 01_ventas_mensuales.html
-│   ├── 01_ventas_mensuales.png
-│   ├── 02_distribucion_calificaciones.html
-│   └── ... (demás archivos HTML y PNG)
-├── .gitignore                    # Archivos y carpetas que Git debe omitir
-├── index.html                    # Dashboard interactivo
-├── visualizaciones.py            # Script de Python para generar los gráficos
-├── hallazgos.md                  # Documento detallado de hallazgos que impactan el negocio
-└── README.md                     # Presentación general del proyecto
+│   └── ...
+└── visualizaciones/          # Gráficos estáticos (.png) e interactivos (.html)
+    ├── 01_ventas_mensuales.png
+    ├── 01_ventas_mensuales.html
+    └── ...
 ```
 
 ---
@@ -201,7 +201,7 @@ fricción y qué acciones tendrían mayor impacto.
 
 - [x] Configuración de la base de datos en MySQL - extracción
 - [x] Carga y validación de los 8 archivos del dataset - extracción
-- [x] EDA y análisis apartir de los actos con SQL - inspección, limpieza, transformación y análisis
+- [x] EDA y análisis a partir de los actos con SQL - inspección, limpieza, transformación y análisis
 - [x] Generación de visualizaciones con Python - carga y visualización
 - [x] Comunicación de hallazgos
 
@@ -220,7 +220,7 @@ fricción y qué acciones tendrían mayor impacto.
 **Recomendación:** Sugiero al equipo comercial enfocar la captación de nuevos vendedores en las 5 categorías líderes (belleza, hogar, relojes, accesorios de computación, etc.) para diversificar la oferta en donde la plataforma ya es más rentable.
 
 > **¿Cuál es el ticket promedio por categoría?**  
-**Hallazgo:** La categoría con el ticket promedio más alto es `computers` (1,283.98 BRL). Al cruzar esto con el volumen, note que las computadoras se compran poco pero caro, y los accesorios (`computers_accessories`) se compran de forma masiva y económica. Ninguna de las categorías de ticket promedio alto figura en el top de volumen, ya que corresponden a compras planificadas o industriales.   
+**Hallazgo:** La categoría con el ticket promedio más alto es `computers` (1,283.98 BRL). Al cruzar esto con el volumen, noté que las computadoras se compran poco pero caro, y los accesorios (`computers_accessories`) se compran de forma masiva y económica. Ninguna de las categorías de ticket promedio alto figura en el top de volumen, ya que corresponden a compras planificadas o industriales.   
 **Recomendación:** Recomiendo dividir el catálogo en dos estrategias de marketing diferentes: compras rápidas o por impulso (productos de bajo ticket y alta frecuencia) y compras planificadas (productos de alto ticket, que requieren mayor tiempo de decisión).
 
 **Acto 2 — ¿Dónde está el problema?**
@@ -264,13 +264,13 @@ fricción y qué acciones tendrían mayor impacto.
 ### Conclusiones y recomendaciones
 Tras un análisis del ecosistema de datos de Olist (2016-2018), se identificaron varios puntos clave donde la empresa puede intervenir para proteger sus ingresos y mejorar la experiencia del cliente:  
 
-> **1. Logística y calificación del cliente"**    
+> **1. Logística y calificación del cliente**    
 **Conclusión:** La fiabilidad del sitio web y el procesamiento de pagos de Olist es excelente (con una bajísima tasa de cancelación de apenas **0.64%**). Sin embargo, el **12.6%** de los clientes califica su experiencia con 1 o 2 estrellas. El análisis demuestra que la insatisfacción no es por el producto, sino por la logística: cuando una entrega se retrasa, la calificación promedio cae drásticamente de **4.22 a 2.33 estrellas**.  
 **Recomendación:** La prioridad número uno debe ser mejorar el cumplimiento de las fechas estimadas de entrega. Asimismo, categorías pesadas como "muebles de oficina" (`office_furniture`) registran los peores tiempos de entrega (~21 días) y la peor calificación promedio (3.5 estrellas), sugiriendo la necesidad de contratar un servicio de transporte especializado para productos voluminosos. 
 
 > **2. Expectativas reales de entrega**
-**Conclusión:** El problema logístico aplica diferente segun la región. Mientras que en Sao Paulo (el motor del negocio con más de 40k órdenes) los envíos promedian **8.6 días**, en los estados del Norte como Amapá, Roraima y Amazonas, los tiempos se disparan a casi un mes (**26 a 28 días**).
-**Recomendación:** La solución más económica y rápida es **mejorar el calculo de estimación en la web** para los clientes del Norte. Al mostrarles fechas de entrega realistas desde el inicio, se evita romper la promesa de entrega y se neutraliza el castigo en las calificaciones.  
+**Conclusión:** El problema logístico aplica diferente según la región. Mientras que en Sao Paulo (el motor del negocio con más de 40k órdenes) los envíos promedian **8.6 días**, en los estados del Norte como Amapá, Roraima y Amazonas, los tiempos se disparan a casi un mes (**26 a 28 días**).
+**Recomendación:** La solución más económica y rápida es **mejorar el cálculo de estimación en la web** para los clientes del Norte. Al mostrarles fechas de entrega realistas desde el inicio, se evita romper la promesa de entrega y se neutraliza el castigo en las calificaciones.  
 
 > **3. Control de calidad del marketplace**
 **Conclusión:** Existen grandes vendedores con volúmenes masivos de ventas que están dañando la reputación de la plataforma debido a su pésimo servicio. El caso más crítico es el vendedor con ID corto `7c67e144`, quien acumula **980 órdenes** pero tiene una calificación promedio crítica de **~3.0 estrellas**.
