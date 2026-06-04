@@ -135,17 +135,28 @@ A partir de ahí se conectan las demás entidades del modelo:
 
 ```
 ecommerce-sales-analysis/
-├── README.md
-├── docs/
-│   └── setup_notes.md        # Problemas encontrados durante la carga y soluciones implementadas
-│   └── eda_notes.md          # Documentación sobre cada query ejecutada durante el EDA
-│   └── erd_olist.png         # Imágen del modelo relacional de la base de datos
-├── sql/
-│   └── queries.sql           # Todas las consultas documentadas con su pregunta de negocio
-├── data/
-│   └── output.csv            # Dataset consolidado exportado desde SQL
-└── py_analisis/
-    └── visualizaciones.py    # Generador de visualizaciones
+├── README.md                 # Presentación principal del proyecto (portada)
+├── index.html                # Página de entrada del Dashboard (raíz para GitHub Pages)
+├── visualizaciones.py        # Script de Python que genera los gráficos
+├── hallazgos.md              # Reporte detallado de negocio y recomendaciones
+├── .gitignore                # Archivo de configuración para omitir archivos temporales
+├── docs/                     # Documentación técnica adicional y diagramas
+│   ├── setup_notes.md        # Problemas encontrados en la carga y soluciones
+│   ├── eda_notes.md          # Documentación detallada del EDA
+│   └── erd_olist.png         # Imagen del modelo relacional (DER)
+├── sql/                      # Scripts SQL organizados y numerados secuencialmente
+│   ├── 01_creacion_tablas.sql
+│   ├── 02_carga_datos.sql
+│   ├── 03_vista_limpia.sql
+│   ├── 04_analisis_eda.sql
+│   └── 05_consultas_actos.sql
+├── datos/                    # Archivos CSV intermedios (salidas de SQL)
+│   ├── calificacion_por_tiempo_entrega.csv
+│   └── ...
+└── visualizaciones/          # Gráficos estáticos (.png) e interactivos (.html)
+    ├── 01_ventas_mensuales.png
+    ├── 01_ventas_mensuales.html
+    └── ...
 ```
 
 ---
