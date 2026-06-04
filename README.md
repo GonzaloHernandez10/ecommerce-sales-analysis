@@ -251,7 +251,7 @@ fricción y qué acciones tendrían mayor impacto.
 ---
 
 ### Conclusiones y recomendaciones
-Tras un análisis del ecosistema de datos de Olist (2016-2018), se identificaron tres áreas clave donde la empresa puede intervenir para proteger sus ingresos y mejorar la experiencia del cliente:  
+Tras un análisis del ecosistema de datos de Olist (2016-2018), se identificaron varios puntos clave donde la empresa puede intervenir para proteger sus ingresos y mejorar la experiencia del cliente:  
 
 > **1. Logística y calificación del cliente"**    
 **Conclusión:** La fiabilidad del sitio web y el procesamiento de pagos de Olist es excelente (con una bajísima tasa de cancelación de apenas **0.64%**). Sin embargo, el **12.6%** de los clientes califica su experiencia con 1 o 2 estrellas. El análisis demuestra que la insatisfacción no es por el producto, sino por la logística: cuando una entrega se retrasa, la calificación promedio cae drásticamente de **4.22 a 2.33 estrellas**.  
@@ -266,7 +266,7 @@ Tras un análisis del ecosistema de datos de Olist (2016-2018), se identificaron
 **Recomendación:** Implementar un sistema de alertas automatizado. Si un vendedor supera las 100 ventas pero su calificación promedio acumulada cae por debajo de **3.8 estrellas**, su visibilidad en el marketplace debe ser penalizada o pausada hasta que pase una auditoría de servicio.  
 
 >**4. Nuevo enfoque comercial**
-* **Conclusión:** El volumen de ventas no siempre equivale a mayores ingresos. Categorías de bajo volumen y alto ticket como "computadoras" (`computers`) generan ingresos significativos con pocas transacciones, mientras que los accesorios se venden de forma masiva y económica. Además, solo 5 categorías concentran el **31% del ingreso total** de Olist.
+**Conclusión:** El volumen de ventas no siempre equivale a mayores ingresos. Categorías de bajo volumen y alto ticket como "computadoras" (`computers`) generan ingresos significativos con pocas transacciones, mientras que los accesorios se venden de forma masiva y económica. Además, solo 5 categorías concentran el **31% del ingreso total** de Olist.
 **Recomendación:** Dividir la estrategia de marketing en dos pilares: compras de impulso/frecuencia (artículos de bajo ticket) y compras planificadas (artículos de alto ticket). Alinear los esfuerzos de captación de nuevos vendedores en las 5 categorías líderes para maximizar la rentabilidad de la plataforma.
 
 ---
