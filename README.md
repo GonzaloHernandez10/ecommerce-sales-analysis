@@ -250,18 +250,32 @@ fricción y qué acciones tendrían mayor impacto.
 ---
 
 ### Conclusiones y recomendaciones
+Tras un análisis del ecosistema de datos de Olist (2016-2018), se identificaron tres áreas clave donde la empresa puede intervenir para proteger sus ingresos y mejorar la experiencia del cliente:  
 
-*Esta sección se completará al finalizar el análisis.*
+**1. Logística y calificación del cliente"**    
+**Conclusión:** La fiabilidad del sitio web y el procesamiento de pagos de Olist es excelente (con una bajísima tasa de cancelación de apenas **0.64%**). Sin embargo, el **12.6%** de los clientes califica su experiencia con 1 o 2 estrellas. El análisis demuestra que la insatisfacción no es por el producto, sino por la logística: cuando una entrega se retrasa, la calificación promedio cae drásticamente de **4.22 a 2.33 estrellas**.  
+**Recomendación:** La prioridad número uno debe ser mejorar el cumplimiento de las fechas estimadas de entrega. Asimismo, categorías pesadas como "muebles de oficina" (`office_furniture`) registran los peores tiempos de entrega (~21 días) y la peor calificación promedio (3.5 estrellas), sugiriendo la necesidad de contratar un servicio de transporte especializado para productos voluminosos. 
+
+**2. Expectativas reales de entrega**
+**Conclusión:** El problema logístico aplica diferente segun la región. Mientras que en Sao Paulo (el motor del negocio con más de 40k órdenes) los envíos promedian **8.6 días**, en los estados del Norte como Amapá, Roraima y Amazonas, los tiempos se disparan a casi un mes (**26 a 28 días**).
+**Recomendación:** La solución más económica y rápida es **mejorar el calculo de estimación en la web** para los clientes del Norte. Al mostrarles fechas de entrega realistas desde el inicio, se evita romper la promesa de entrega y se neutraliza el castigo en las calificaciones.  
+
+**3. Control de Calidad del Marketplace**
+**Conclusión:** Existen grandes vendedores con volúmenes masivos de ventas que están dañando la reputación de la plataforma debido a su pésimo servicio. El caso más crítico es el vendedor con ID corto `7c67e144`, quien acumula **980 órdenes** pero tiene una calificación promedio crítica de **~3.0 estrellas**.
+**Recomendación:** Implementar un sistema de alertas automatizado. Si un vendedor supera las 100 ventas pero su calificación promedio acumulada cae por debajo de **3.8 estrellas**, su visibilidad en el marketplace debe ser penalizada o pausada hasta que pase una auditoría de servicio.  
+
+**4. Nuevo enfoque comercial**
+* **Conclusión:** El volumen de ventas no siempre equivale a mayores ingresos. Categorías de bajo volumen y alto ticket como "computadoras" (`computers`) generan ingresos significativos con pocas transacciones, mientras que los accesorios se venden de forma masiva y económica. Además, solo 5 categorías concentran el **31% del ingreso total** de Olist.
+**Recomendación:** Dividir la estrategia de marketing en dos pilares: compras de impulso/frecuencia (artículos de bajo ticket) y compras planificadas (artículos de alto ticket). Alinear los esfuerzos de captación de nuevos vendedores en las 5 categorías líderes para maximizar la rentabilidad de la plataforma.
 
 ---
 
 ### Sobre el autor
-
+Developer Frontend con gusto del mundo del data.
 Analista de datos en formación con background en desarrollo de aplicaciones web.
 Este proyecto forma parte de un portafolio orientado a demostrar competencias
 en el ciclo completo de análisis de datos: extracción, limpieza, análisis y
 comunicación de resultados.
 
-📧 *correo*  
-💼 *LinkedIn*  
-🐙 *GitHub*
+📧 jorgegonzalo00@gmail.com 
+💼 https://www.linkedin.com/in/jorge-gonzalo-hern%C3%A1ndez-44a05524a/*  
