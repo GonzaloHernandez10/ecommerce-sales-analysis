@@ -19,7 +19,7 @@ una pregunta de negocio concreta a través de un análisis estructurado con narr
 
 ### Pregunta de negocio
 
-> **¿Olist está creciendo bien o está creciendo mal?**
+> **¿Olist está creciendo de manera saludable o el aumento en volumen está dañando la calidad del servicio?**
 
 Las ventas de Olist crecieron en volumen entre 2016 y 2018, pero simultáneamente
 aumentaron las quejas de clientes. Este análisis busca determinar si el crecimiento
